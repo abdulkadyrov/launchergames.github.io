@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎨 Рисуй по памяти</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="startScreen" class="screen active">
+  <div class="card">
+    <h1>🎨 Рисуй по памяти</h1>
+
+    <label class="fileLabel">
+      📷 Выбрать фото
+      <input type="file" id="upload" accept="image/*">
+    </label>
+
+    <div class="selectGroup">
+      <label>⏱ Время показа:</label>
+      <select id="viewTime">
+        <option value="3">3 секунды</option>
+        <option value="5" selected>5 секунд</option>
+        <option value="7">7 секунд</option>
+      </select>
+    </div>
+
+    <div class="selectGroup">
+      <label>🖌 Время рисования:</label>
+      <select id="drawTime">
+        <option value="20">20 секунд</option>
+        <option value="30" selected>30 секунд</option>
+        <option value="45">45 секунд</option>
+      </select>
+    </div>
+
+    <button class="mainBtn" onclick="startMemory()">Начать игру</button>
+  </div>
+</div>
+
+<div id="memoryScreen" class="screen">
+  <div class="timer" id="memoryTimer"></div>
+  <img id="memoryImage">
+</div>
+
+<div id="drawScreen" class="screen">
+  <div class="timer" id="drawTimer"></div>
+
+  <canvas id="canvas"></canvas>
+
+  <div class="tools">
+    <input type="color" id="colorPicker" value="#000000">
+    <input type="range" id="brushSize" min="2" max="40" value="8">
+    <button onclick="setEraser()">Ластик</button>
+    <button onclick="clearCanvas()">Очистить</button>
+    <button onclick="finishDrawing()">Готово</button>
+  </div>
+</div>
+
+<div id="resultScreen" class="screen">
+  <h2>🆚 Сравнение</h2>
+  <div class="compare">
+    <div>
+      <h3>Оригинал</h3>
+      <img id="originalResult">
+    </div>
+    <div>
+      <h3>Твой рисунок</h3>
+      <img id="drawingResult">
+    </div>
+  </div>
+  <button class="mainBtn" onclick="location.reload()">Новая игра</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
