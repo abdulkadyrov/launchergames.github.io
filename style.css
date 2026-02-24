@@ -1,12 +1,14 @@
+/* ===== БАЗА ===== */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: linear-gradient(135deg,#4fc3f7,#ff9800);
   color: white;
-  font-weight: bold; /* весь текст жирный */
+  font-weight: bold;
   overflow-x: hidden;
 }
 
+/* ===== ЭКРАНЫ ===== */
 .screen {
   display: none;
   min-height: 100vh;
@@ -21,6 +23,7 @@ body {
   display: flex;
 }
 
+/* ===== КАРТОЧКА СТАРТА ===== */
 .card {
   background: rgba(255,255,255,0.15);
   backdrop-filter: blur(15px);
@@ -31,6 +34,7 @@ body {
   box-shadow: 0 0 25px rgba(0,0,0,0.3);
 }
 
+/* ===== ЗАГРУЗКА ФОТО ===== */
 .fileLabel {
   display: block;
   background: black;
@@ -38,22 +42,25 @@ body {
   border-radius: 10px;
   margin: 15px 0;
   cursor: pointer;
-  font-weight: bold;
 }
 
 .fileLabel input {
   display: none;
 }
 
-select {
-  padding: 8px;
+/* ===== INPUT NUMBER ===== */
+input[type="number"] {
+  padding: 10px;
   border-radius: 8px;
   border: none;
   margin: 10px 0;
   width: 100%;
   font-weight: bold;
+  font-size: 16px;
+  text-align: center;
 }
 
+/* ===== КНОПКИ ===== */
 .mainBtn {
   background: black;
   padding: 12px;
@@ -64,44 +71,84 @@ select {
   color: white;
   font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
+.mainBtn:hover {
+  transform: scale(1.05);
+}
+
+/* ===== ТАЙМЕР ===== */
 .timer {
   font-size: 32px;
   margin: 15px;
   animation: pulse 1s infinite;
-  font-weight: bold;
 }
 
+/* ===== ИЗОБРАЖЕНИЕ ===== */
 #memoryImage {
   max-width: 90vw;
   max-height: 70vh;
   object-fit: contain;
   border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
+/* ===== ХОЛСТ ===== */
 canvas {
-  background: white; /* Белый холст */
+  background: white;
   border-radius: 15px;
   width: 90vw;
   height: 60vh;
   touch-action: none;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
+/* ===== ПАНЕЛЬ ИНСТРУМЕНТОВ ===== */
 .tools {
-  margin-top: 10px;
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
 }
 
 .tools button {
   padding: 8px 12px;
-  margin: 5px;
   border-radius: 8px;
   border: none;
   background: black;
   color: white;
   font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
+.tools button:hover {
+  transform: scale(1.08);
+}
+
+/* Активный инструмент */
+.tools button.activeTool {
+  background: #ff9800;
+  box-shadow: 0 0 10px rgba(255,255,0,0.7);
+}
+
+/* Цвет и размер кисти */
+#colorPicker {
+  width: 45px;
+  height: 45px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+#brushSize {
+  width: 120px;
+}
+
+/* ===== ЭКРАН РЕЗУЛЬТАТА ===== */
 .compare {
   display: flex;
   flex-wrap: wrap;
@@ -114,8 +161,10 @@ canvas {
   object-fit: contain;
   border-radius: 12px;
   margin: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.3);
 }
 
+/* ===== АНИМАЦИИ ===== */
 @keyframes fade {
   from {opacity: 0; transform: translateY(20px);}
   to {opacity: 1; transform: translateY(0);}
@@ -125,4 +174,23 @@ canvas {
   0% {transform: scale(1);}
   50% {transform: scale(1.1);}
   100% {transform: scale(1);}
+}
+
+/* ===== МОБИЛЬНАЯ АДАПТАЦИЯ ===== */
+@media (max-width: 600px) {
+  .card {
+    width: 90%;
+  }
+
+  .timer {
+    font-size: 28px;
+  }
+
+  canvas {
+    height: 55vh;
+  }
+
+  .compare img {
+    width: 80vw;
+  }
 }
