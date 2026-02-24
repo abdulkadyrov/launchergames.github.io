@@ -18,21 +18,13 @@
     </label>
 
     <div class="selectGroup">
-      <label>⏱ Время показа:</label>
-      <select id="viewTime">
-        <option value="3">3 секунды</option>
-        <option value="5" selected>5 секунд</option>
-        <option value="7">7 секунд</option>
-      </select>
+      <label>⏱ Время показа (сек):</label>
+      <input type="number" id="viewTime" value="5" min="1">
     </div>
 
     <div class="selectGroup">
-      <label>🖌 Время рисования:</label>
-      <select id="drawTime">
-        <option value="20">20 секунд</option>
-        <option value="30" selected>30 секунд</option>
-        <option value="45">45 секунд</option>
-      </select>
+      <label>🖌 Время рисования (сек):</label>
+      <input type="number" id="drawTime" value="30" min="5">
     </div>
 
     <button class="mainBtn" onclick="startMemory()">Начать игру</button>
@@ -52,7 +44,10 @@
   <div class="tools">
     <input type="color" id="colorPicker" value="#000000">
     <input type="range" id="brushSize" min="2" max="40" value="8">
-    <button onclick="setEraser()">Ластик</button>
+
+    <button id="brushBtn" onclick="setBrush()">🖌 Кисть</button>
+    <button id="eraserBtn" onclick="setEraser()">🧽 Ластик</button>
+
     <button onclick="clearCanvas()">Очистить</button>
     <button onclick="finishDrawing()">Готово</button>
   </div>
