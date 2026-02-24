@@ -5,6 +5,7 @@ let ctx = canvas.getContext("2d");
 let drawing = false;
 let brushColor = "#000000";
 let brushSize = 8;
+let currentTool = "brush";
 let drawInterval;
 
 // ===== Экран =====
@@ -62,7 +63,6 @@ function startDrawing(){
   showScreen("drawScreen");
   resizeCanvas();
 
-  // Белый фон для холста
   ctx.fillStyle = "white";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -82,7 +82,11 @@ function startDrawing(){
   },1000);
 }
 
-// ===== Координаты =====
+// ===== Рисование =====
+canvas.addEventListener("touchstart", startDraw);
+canvas.addEventListener("touchmove", draw);
+canvas.addEventListener("touchend", stopDraw);
+
 function getTouchPos(e) {
   const rect = canvas.getBoundingClientRect();
   const scaleX = canvas.width / rect.width;
@@ -92,11 +96,6 @@ function getTouchPos(e) {
     y: (e.touches[0].clientY - rect.top) * scaleY
   };
 }
-
-// ===== Рисование =====
-canvas.addEventListener("touchstart", startDraw);
-canvas.addEventListener("touchmove", draw);
-canvas.addEventListener("touchend", stopDraw);
 
 function startDraw(e){
   drawing = true;
@@ -109,7 +108,12 @@ function draw(e){
 
   const pos = getTouchPos(e);
 
-  ctx.fillStyle = brushColor;
+  if(currentTool === "eraser"){
+    ctx.globalCompositeOperation = "destination-out";
+  } else {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = brushColor;
+  }
 
   ctx.beginPath();
   ctx.arc(pos.x, pos.y, brushSize, 0, Math.PI * 2);
@@ -129,11 +133,20 @@ document.getElementById("brushSize").oninput = function(){
   brushSize = this.value;
 };
 
+function setBrush(){
+  currentTool = "brush";
+  document.getElementById("brushBtn").classList.add("activeTool");
+  document.getElementById("eraserBtn").classList.remove("activeTool");
+}
+
 function setEraser(){
-  brushColor = "white"; // ластик просто закрашивает белым
+  currentTool = "eraser";
+  document.getElementById("eraserBtn").classList.add("activeTool");
+  document.getElementById("brushBtn").classList.remove("activeTool");
 }
 
 function clearCanvas(){
+  ctx.globalCompositeOperation = "source-over";
   ctx.fillStyle = "white";
   ctx.fillRect(0,0,canvas.width,canvas.height);
 }
@@ -141,6 +154,7 @@ function clearCanvas(){
 // ===== Конец =====
 function finishDrawing(){
   clearInterval(drawInterval);
+  ctx.globalCompositeOperation = "source-over";
   showScreen("resultScreen");
 
   document.getElementById("originalResult").src = imageData;
