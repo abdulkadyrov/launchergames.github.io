@@ -1,0 +1,1965 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>English Quiz (RU+EN) • Outcomes Intermediate</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111b31;
+      --card2:#0f1930;
+      --text:#e8eefc;
+      --muted:#a9b7dd;
+      --accent:#6aa6ff;
+      --good:#33d17a;
+      --bad:#ff5c7a;
+      --warn:#ffc857;
+      --border:rgba(255,255,255,.12);
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+      --radius:16px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--sans);
+      background: radial-gradient(1200px 800px at 15% 10%, rgba(106,166,255,.18), transparent 60%),
+                  radial-gradient(900px 600px at 85% 20%, rgba(51,209,122,.12), transparent 55%),
+                  radial-gradient(900px 700px at 60% 95%, rgba(255,92,122,.12), transparent 55%),
+                  var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+    header{
+      padding:18px 18px 8px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    .title{
+      display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap;
+      justify-content:space-between;
+    }
+    h1{margin:0; font-size:18px; letter-spacing:.2px; font-weight:800}
+    .subtitle{margin:6px 0 0; color:var(--muted); font-size:13px; max-width:850px; line-height:1.35}
+    .pillrow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .pill{
+      font-size:12px; padding:7px 10px; border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid var(--border);
+      color:var(--muted);
+    }
+    main{
+      padding:10px 18px 28px;
+      max-width:1100px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){
+      main{grid-template-columns:1fr}
+    }
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .hd{
+      padding:14px 14px 10px;
+      border-bottom:1px solid var(--border);
+      background:rgba(0,0,0,.08);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+    }
+    .card .hd h2{
+      margin:0;
+      font-size:14px;
+      letter-spacing:.2px;
+    }
+    .card .bd{padding:14px}
+    .grid2{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .grid1{display:grid; grid-template-columns:1fr; gap:10px}
+    label{font-size:12px; color:var(--muted); display:block; margin-bottom:6px}
+    select, input[type="number"], input[type="text"]{
+      width:100%;
+      padding:10px 10px;
+      border-radius:12px;
+      background:rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      color:var(--text);
+      outline:none;
+    }
+    input[type="checkbox"]{transform: translateY(1px);}
+    .row{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+    .btnrow{display:flex; gap:10px; flex-wrap:wrap}
+    button{
+      cursor:pointer;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background: rgba(106,166,255,.18);
+      color:var(--text);
+      font-weight:700;
+    }
+    button.secondary{background:rgba(255,255,255,.07)}
+    button.danger{background:rgba(255,92,122,.18)}
+    button.good{background:rgba(51,209,122,.18)}
+    button:disabled{opacity:.55; cursor:not-allowed}
+    .stat{
+      display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:10px    }
+    .kpi{
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:10px;
+      background:rgba(0,0,0,.14);
+    }
+    .kpi .k{font-size:11px; color:var(--muted)}
+    .kpi .v{font-size:18px; font-weight:900; margin-top:4px}
+    .kpi .s{font-size:12px; color:var(--muted); margin-top:2px}
+    .progress{
+      margin-top:10px;
+      height:10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid var(--border);
+      overflow:hidden;
+    }
+    .bar{height:100%; width:0%; background: linear-gradient(90deg, var(--accent), rgba(51,209,122,.95));}
+    .qwrap{padding:16px}
+    .qmeta{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+    .tag{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.16);
+      color:var(--muted);
+    }
+    .qtitle{
+      font-size:18px;
+      font-weight:900;
+      line-height:1.2;
+      margin:0 0 8px;
+    }
+    .qsub{color:var(--muted); font-size:13px; line-height:1.35; margin:0 0 12px}
+    .options{display:grid; gap:10px; margin-top:12px}
+    .opt{
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.16);
+      transition: transform .06s ease, background .2s ease;
+      text-align:left;
+      font-weight:700;
+    }
+    .opt:hover{transform: translateY(-1px); background:rgba(255,255,255,.06)}
+    .opt.correct{border-color:rgba(51,209,122,.6); background:rgba(51,209,122,.12)}
+    .opt.wrong{border-color:rgba(255,92,122,.6); background:rgba(255,92,122,.12)}
+    .answerbox{
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-top:10px
+    }
+    .answerbox input{flex:1; min-width:200px}
+    .feedback{
+      margin-top:12px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.14);
+      border-radius:14px;
+      padding:12px;
+      display:none;
+    }
+    .feedback.show{display:block}
+    .fbline{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap}
+    .fbok{color:var(--good); font-weight:900}
+    .fbno{color:var(--bad); font-weight:900}
+    .explain{margin-top:8px; color:var(--muted); line-height:1.4; font-size:13px}
+    .mini{
+      font-family:var(--mono);
+      font-size:12px;
+      color:rgba(232,238,252,.9);
+      background:rgba(0,0,0,.18);
+      border:1px solid var(--border);
+      padding:8px 10px;
+      border-radius:12px;
+      overflow:auto;
+      white-space:pre-wrap;
+    }
+    .divider{height:1px; background:var(--border); margin:12px 0}
+    .flash{
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+      background:rgba(0,0,0,.14);
+    }
+    .flash .front{font-size:20px; font-weight:900}
+    .flash .back{display:none; margin-top:10px}
+    .flash.show .back{display:block}
+    .flash .meta{color:var(--muted); font-size:13px; margin-top:6px; line-height:1.35}
+    footer{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 18px 20px;
+      color:var(--muted);
+      font-size:12px;
+    }
+    .hint{color:var(--muted); font-size:12px}
+  </style>
+</head>
+<body>
+<header>
+  <div class="title">
+    <div>
+      <h1>Викторина по английскому (RU+EN) • на основе присланного фрагмента Outcomes Intermediate</h1>
+      <p class="subtitle">
+        Режимы: Quiz (викторина ~100 вопросов) + Flashcards (слова/фразы) + Mistakes (повтор ошибок).
+        Есть объяснения и озвучка (если браузер поддерживает).
+      </p>
+      <div class="pillrow">
+        <span class="pill">Present simple vs Present continuous</span>
+        <span class="pill">Future plans (will / going to / present continuous / have to / might)</span>
+        <span class="pill">Weather</span>
+        <span class="pill">Places of interest</span>
+        <span class="pill">Injuries & problems</span>
+        <span class="pill">Chunks</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="hd">
+      <h2>Настройки</h2>
+      <div class="hint" id="voiceStatus">Voice: …</div>
+    </div>
+    <div class="bd">
+      <div class="grid2">
+        <div>
+          <label>Режим</label>
+          <select id="mode">
+            <option value="quiz">Quiz • Вопросы</option>
+            <option value="flash">Flashcards • Вокабуляр</option>
+            <option value="mistakes">Ошибки • Повтор</option>
+          </select>
+        </div>
+        <div>
+          <label>Категория</label>
+          <select id="category">
+            <option value="all">Все</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Количество (для Quiz)</label>
+          <input id="limit" type="number" min="10" max="200" step="5" value="100">
+        </div>
+        <div>
+          <label>Перемешивать</label>
+          <div class="row">
+            <input id="shuffle" type="checkbox" checked>
+            <span class="hint">случайный порядок</span>
+          </div>
+        </div>
+
+        <div>
+          <label>Озвучка (EN)</label>
+          <div class="row">
+            <input id="tts" type="checkbox" checked>
+            <span class="hint">говорить вопросы/слова</span>
+          </div>
+        </div>
+        <div>
+          <label>Скорость озвучки</label>
+          <input id="rate" type="number" min="0.7" max="1.3" step="0.05" value="1.0">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="btnrow">
+        <button id="start" class="good">Старт / Перезапуск</button>
+        <button id="next" class="secondary" disabled>Дальше</button>
+        <button id="reveal" class="secondary" disabled>Показать ответ</button>
+        <button id="resetStats" class="danger">Сброс статистики</button>
+      </div>
+
+      <div class="stat">
+        <div class="kpi">
+          <div class="k">Прогресс</div>
+          <div class="v" id="kpiProgress">0 / 0</div>
+          <div class="s" id="kpiCategory">Категория: —</div>
+          <div class="progress"><div class="bar" id="bar"></div></div>
+        </div>
+        <div class="kpi">
+          <div class="k">Результат</div>
+          <div class="v" id="kpiScore">0%</div>
+          <div class="s" id="kpiDetails">Верно: 0 • Ошибки: 0</div>
+          <div class="s" id="kpiStreak">Серия: 0</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="hint">
+        Подсказка: в Quiz после ответа появляется объяснение (RU+EN).
+        В Mistakes показываются только вопросы, где были ошибки.
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="hd">
+      <h2 id="panelTitle">Quiz</h2>
+      <div class="hint" id="panelHint">Выбирай вариант или вводи ответ</div>
+    </div>
+
+    <div class="qwrap" id="panel">
+      <!-- dynamic -->
+    </div>
+  </section>
+</main>
+
+<footer>
+  Если хочешь “один язык больше другого”: сейчас интерфейс и объяснения в основном RU, но ключевые формулировки — EN.
+  Могу сделать наоборот (EN основной).
+</footer>
+
+<script>
+/* =========================
+   DATA (≈100 questions)
+   ========================= */
+
+const QUESTIONS = [
+  // --- Talking about people / meeting for the first time ---
+  {
+    id:"ppl-1", cat:"People / Meeting",
+    type:"mcq",
+    ru:"Где люди встречаются в первый раз (задание Listening 1)?",
+    en:"Where do they meet (Listening 1)?",
+    options:[
+      "In two conversations where people meet for the first time",
+      "At a hospital",
+      "On a plane",
+      "At a football match"
+    ],
+    answer:0,
+    explain_ru:"В задании сказано: «Listen to two conversations in which people meet for the first time».",
+    explain_en:"The task says: two conversations where people meet for the first time."
+  },
+  {
+    id:"ppl-2", cat:"People / Meeting",
+    type:"mcq",
+    ru:"Как перевести phrasal verb “bump into”?",
+    en:"What does “bump into” mean?",
+    options:[
+      "Meet someone unexpectedly",
+      "Argue with someone",
+      "Call someone back",
+      "Move to a new city"
+    ],
+    answer:0,
+    explain_ru:"bump into = неожиданно встретить кого-то (без планов).",
+    explain_en:"bump into = meet someone unexpectedly (not planned)."
+  },
+  {
+    id:"ppl-3", cat:"People / Talking about people",
+    type:"mcq",
+    ru:"“single” — это…",
+    en:"“single” means…",
+    options:["not married", "married", "separated", "a twin"],
+    answer:0,
+    explain_ru:"single = не в браке / одинок(ая).",
+    explain_en:"single = not married."
+  },
+  {
+    id:"ppl-4", cat:"People / Talking about people",
+    type:"mcq",
+    ru:"“separated” — это…",
+    en:"“separated” means…",
+    options:["living separately (not together as a couple)", "married", "only child", "translator"],
+    answer:0,
+    explain_ru:"separated = пара разошлась, живут отдельно (не обязательно развод).",
+    explain_en:"separated = a couple no longer live together."
+  },
+  {
+    id:"ppl-5", cat:"People / Talking about people",
+    type:"mcq",
+    ru:"“an only child” — это…",
+    en:"“an only child” is…",
+    options:["a person with no brothers or sisters", "a twin", "the youngest of six kids", "a civil servant"],
+    answer:0,
+    explain_ru:"only child = единственный ребёнок в семье.",
+    explain_en:"only child = a child with no siblings."
+  },
+  {
+    id:"ppl-6", cat:"People / Talking about people",
+    type:"mcq",
+    ru:"“a twin” — это…",
+    en:"“a twin” is…",
+    options:["one of two children born at the same time", "a single person", "a degree subject", "a building"],
+    answer:0,
+    explain_ru:"twin = один из близнецов.",
+    explain_en:"twin = one of two children born at the same time."
+  },
+  {
+    id:"ppl-7", cat:"People / Talking about people",
+    type:"mcq",
+    ru:"“a civil servant” — это…",
+    en:"“a civil servant” is…",
+    options:["a government employee", "a warehouse worker", "a website designer", "a chat show host"],
+    answer:0,
+    explain_ru:"civil servant = госслужащий.",
+    explain_en:"civil servant = someone who works for the government."
+  },
+  {
+    id:"ppl-8", cat:"People / Talking about people",
+    type:"mcq",
+    ru:"“a translator” — это…",
+    en:"“a translator” is…",
+    options:["someone who translates", "a doctor", "an architect", "a receptionist"],
+    answer:0,
+    explain_ru:"translator = переводчик.",
+    explain_en:"translator = someone who translates."
+  },
+
+  // --- Free Hugs reading ---
+  {
+    id:"hugs-1", cat:"Reading / Free Hugs",
+    type:"mcq",
+    ru:"Где началась кампания Free Hugs Хуана Манна?",
+    en:"Where did Juan Mann start the Free Hugs campaign?",
+    options:["Sydney, Australia", "Kraków, Poland", "Oxford Street, London", "Istanbul, Turkey"],
+    answer:0,
+    explain_ru:"Он вернулся в Сидней и пошёл в главный шопинг-район с табличкой «Free Hugs».",
+    explain_en:"He returned to Sydney and went to a main shopping district with a “Free Hugs” sign."
+  },
+  {
+    id:"hugs-2", cat:"Reading / Free Hugs",
+    type:"mcq",
+    ru:"Почему он чувствовал себя плохо в 2004 году?",
+    en:"Why did he have a miserable year in 2004?",
+    options:[
+      "Parents divorced; he felt lonely and unemployed",
+      "He lost his passport",
+      "He moved to Japan",
+      "He was a national judo champion"
+    ],
+    answer:0,
+    explain_ru:"В тексте: родители развелись, он был одинок и безработный.",
+    explain_en:"The text says: parents divorced; he was lonely and unemployed."
+  },
+  {
+    id:"hugs-3", cat:"Reading / Free Hugs",
+    type:"mcq",
+    ru:"Что было написано на картонной табличке?",
+    en:"What did the cardboard sign say?",
+    options:["Free Hugs", "Free Food", "Need Help", "Lost Wallet"],
+    answer:0,
+    explain_ru:"Прямо в тексте: sign saying ‘Free Hugs’.",
+    explain_en:"It explicitly says: a sign saying ‘Free Hugs’."
+  },
+  {
+    id:"hugs-4", cat:"Reading / Free Hugs",
+    type:"mcq",
+    ru:"Сколько времени прошло, прежде чем к нему подошла первая женщина?",
+    en:"How long before a woman approached him?",
+    options:["After fifteen minutes", "After one hour", "After two years", "After one day"],
+    answer:0,
+    explain_ru:"В тексте: After fifteen minutes, however, a woman approached him…",
+    explain_en:"It says: After fifteen minutes…"
+  },
+  {
+    id:"hugs-5", cat:"Reading / Free Hugs",
+    type:"mcq",
+    ru:"Что случилось у женщины в тот день (причина, почему ей нужен был hug)?",
+    en:"What happened to the woman that morning?",
+    options:[
+      "Her dog died; it was also the first anniversary of her daughter’s death",
+      "She won the lottery",
+      "She moved house",
+      "She got married"
+    ],
+    answer:0,
+    explain_ru:"Две причины: умерла собака и годовщина смерти дочери.",
+    explain_en:"Two reasons: her dog died and it was her daughter’s death anniversary."
+  },
+  {
+    id:"hugs-6", cat:"Reading / Free Hugs",
+    type:"mcq",
+    ru:"Где видео с Free Hugs стало вирусным?",
+    en:"Where did the Free Hugs video get popular?",
+    options:["YouTube", "TikTok", "Netflix", "BBC radio"],
+    answer:0,
+    explain_ru:"В тексте: posted the video on YouTube … over 75 million hits.",
+    explain_en:"It says: posted on YouTube … over 75 million hits."
+  },
+  {
+    id:"hugs-7", cat:"Reading / Free Hugs",
+    type:"mcq",
+    ru:"Кто взял у него интервью (легендарная ведущая)?",
+    en:"Who interviewed him (legendary host)?",
+    options:["Oprah Winfrey", "Claudio Nardi", "Lucy Clegg", "James Wilcox"],
+    answer:0,
+    explain_ru:"В тексте: interviewed by … Oprah Winfrey.",
+    explain_en:"It says: interviewed by Oprah Winfrey."
+  },
+  {
+    id:"hugs-8", cat:"Reading / Free Hugs",
+    type:"mcq",
+    ru:"Почему людям может быть проще поговорить с незнакомцем, чем позвонить на helpline?",
+    en:"Why might people prefer talking to a stranger instead of calling a helpline?",
+    options:[
+      "They’re too embarrassed to call or seek counselling",
+      "It’s more expensive",
+      "They don’t have phones",
+      "Helplines don’t exist"
+    ],
+    answer:0,
+    explain_ru:"В тексте: too embarrassed to call a helpline or seek counselling.",
+    explain_en:"The text: too embarrassed to call a helpline or seek counselling."
+  },
+
+  // --- Present simple vs continuous ---
+  {
+    id:"pspc-1", cat:"Grammar / Present simple vs continuous",
+    type:"mcq",
+    ru:"Какое время обычно описывает привычку/регулярное действие?",
+    en:"Which tense usually describes a habit or regular repeated activity?",
+    options:["Present simple", "Present continuous", "Past simple", "Present perfect continuous"],
+    answer:0,
+    explain_ru:"Present simple: I train on Saturdays.",
+    explain_en:"Present simple is used for habits: I train on Saturdays."
+  },
+  {
+    id:"pspc-2", cat:"Grammar / Present simple vs continuous",
+    type:"mcq",
+    ru:"Какое время часто описывает временную незавершённую ситуацию “at the moment”?",
+    en:"Which tense often describes a temporary unfinished activity “at the moment”?",
+    options:["Present continuous", "Present simple", "Past simple", "Future simple"],
+    answer:0,
+    explain_ru:"Present continuous: We're setting up a new website at the moment.",
+    explain_en:"Present continuous: We’re setting up … at the moment."
+  },
+  {
+    id:"pspc-3", cat:"Grammar / Present simple vs continuous",
+    type:"mcq",
+    ru:"Какая форма часто используется для будущего, если уже всё договорено/запланировано?",
+    en:"Which form can express a future arrangement already fixed?",
+    options:["Present continuous", "Present perfect", "Past continuous", "will (only)"],
+    answer:0,
+    explain_ru:"We're getting married in the summer (уже договорено).",
+    explain_en:"Present continuous can show arranged future: We’re getting married…"
+  },
+  {
+    id:"pspc-4", cat:"Grammar / Present simple vs continuous",
+    type:"mcq",
+    ru:"Какие глаголы обычно НЕ используются в continuous (stative verbs)?",
+    en:"Which are typically NOT used in continuous (stative verbs)?",
+    options:[
+      "agree, like, believe, need, belong, own, seem, want",
+      "run, swim, talk, watch",
+      "write, read, cook, drive",
+      "meet, set up, travel, hire"
+    ],
+    answer:0,
+    explain_ru:"В списке из задания: agree/like/believe/need/belong/own/seem/forget/want (stative).",
+    explain_en:"These are stative verbs; usually not used in continuous."
+  },
+
+  // Fill gaps (based on ex 6 style) - answers may be multiple; we use short input with tolerant check
+  {
+    id:"gap-1", cat:"Grammar / Present simple vs continuous",
+    type:"input",
+    ru:"Заполни: A: How ___ your course ___? (go)",
+    en:"Complete: A: How ___ your course ___? (go)",
+    answerText:"is your course going",
+    accept:["is your course going","how is your course going"],
+    explain_ru:"Вопрос о текущей ситуации → present continuous: How is your course going?",
+    explain_en:"About how things are currently going → present continuous."
+  },
+  {
+    id:"gap-2", cat:"Grammar / Present simple vs continuous",
+    type:"input",
+    ru:"Заполни: B: I ___ Saturday mornings, but I'm free in the afternoon. (work)",
+    en:"Complete: B: I ___ Saturday mornings, but I'm free in the afternoon. (work)",
+    answerText:"work",
+    accept:["work","i work"],
+    explain_ru:"Регулярное действие → present simple: I work Saturday mornings.",
+    explain_en:"Habit → present simple."
+  },
+  {
+    id:"gap-3", cat:"Grammar / Present simple vs continuous",
+    type:"input",
+    ru:"Заполни: B: ... now she ___ a Master's. (do)",
+    en:"Complete: ... now she ___ a Master's. (do)",
+    answerText:"'s doing / is doing",
+    accept:["is doing","she is doing","she's doing","s doing","'s doing"],
+    explain_ru:"Текущий процесс обучения → present continuous: she’s doing a Master’s.",
+    explain_en:"Current temporary activity → present continuous."
+  },
+  {
+    id:"gap-4", cat:"Grammar / Present simple vs continuous",
+    type:"input",
+    ru:"Заполни: B: Yeah, it ___ down. (pour)",
+    en:"Complete: Yeah, it ___ down. (pour)",
+    answerText:"'s pouring / is pouring",
+    accept:["is pouring","it's pouring","its pouring","s pouring","'s pouring"],
+    explain_ru:"Сейчас идёт сильный дождь → present continuous: it’s pouring down.",
+    explain_en:"Happening now → present continuous."
+  },
+  {
+    id:"gap-5", cat:"Grammar / Present simple vs continuous",
+    type:"input",
+    ru:"Заполни: B: Yeah. I ___ an old friend of mine for dinner. (meet)",
+    en:"Complete: Yeah. I ___ an old friend of mine for dinner. (meet)",
+    answerText:"'m meeting / am meeting",
+    accept:["am meeting","i am meeting","i'm meeting","im meeting","'m meeting"],
+    explain_ru:"Запланированная встреча (arrangement) → present continuous.",
+    explain_en:"Arranged plan → present continuous."
+  },
+
+  // --- Future plans forms ---
+  {
+    id:"fut-1", cat:"Grammar / Future plans",
+    type:"mcq",
+    ru:"Какая форма выражает обязанность/обязательное действие в будущем?",
+    en:"Which structure expresses an obligation in the future?",
+    options:["have to", "might", "be thinking of", "present continuous"],
+    answer:0,
+    explain_ru:"В примере: I have to work long hours in July and August.",
+    explain_en:"Example: I have to work long hours…"
+  },
+  {
+    id:"fut-2", cat:"Grammar / Future plans",
+    type:"mcq",
+    ru:"Какая форма выражает менее определённый план/возможность?",
+    en:"Which shows a less certain plan/possibility?",
+    options:["might / may", "present continuous (arrangement)", "have to", "past simple"],
+    answer:0,
+    explain_ru:"might/may = возможно, но не уверен(а).",
+    explain_en:"might/may = possible but not certain."
+  },
+  {
+    id:"fut-3", cat:"Grammar / Future plans",
+    type:"mcq",
+    ru:"“We’re staying in a five-star hotel.” — это…",
+    en:"“We’re staying in a five-star hotel.” is…",
+    options:["a definite plan/arrangement", "a general truth", "a past event", "a guess with no evidence"],
+    answer:0,
+    explain_ru:"Present continuous здесь = договорённость/уже решено.",
+    explain_en:"Present continuous = arranged/decided plan."
+  },
+  {
+    id:"fut-4", cat:"Grammar / Future plans",
+    type:"mcq",
+    ru:"“We’ll probably hire a car …” — это…",
+    en:"“We’ll probably hire a car …” is…",
+    options:["a prediction/decision with probability", "a fixed arrangement", "a past habit", "an obligation"],
+    answer:0,
+    explain_ru:"will probably = прогноз/вероятное решение.",
+    explain_en:"will probably = prediction/likely plan."
+  },
+  {
+    id:"fut-5", cat:"Grammar / Future plans",
+    type:"input",
+    ru:"Вставь слово: A: ___ you going away in the summer?",
+    en:"Fill one word: A: ___ you going away in the summer?",
+    answerText:"Are",
+    accept:["are"],
+    explain_ru:"Вопрос с going away (present continuous) → Are you…?",
+    explain_en:"Present continuous question → Are you…?"
+  },
+  {
+    id:"fut-6", cat:"Grammar / Future plans",
+    type:"mcq",
+    ru:"Какие 2 вопроса часто используют, чтобы спросить о планах на будущее?",
+    en:"Which two questions are often used to ask about future plans?",
+    options:[
+      "What are you doing (this weekend)? / Are you going to do anything for…?",
+      "What did you do? / Have you done?",
+      "Where were you? / Are you being…?",
+      "Do you like…? / Are you liking…?"
+    ],
+    answer:0,
+    explain_ru:"Из блока вопросов: What are you doing…? Are you going to do anything…?",
+    explain_en:"Common: What are you doing…? Are you going to…?"
+  },
+
+  // --- Weather vocabulary ---
+  {
+    id:"w-1", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"Как спросить о прогнозе?",
+    en:"How do you ask about the forecast?",
+    options:[
+      "What's the forecast for tomorrow / the weekend?",
+      "What's the weather like yesterday?",
+      "How is the climate been?",
+      "Do you forecast?"
+    ],
+    answer:0,
+    explain_ru:"Формула из текста: What's the forecast for…?",
+    explain_en:"From the book: What’s the forecast for…?"
+  },
+  {
+    id:"w-2", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"“pour down” означает…",
+    en:"“pour down” means…",
+    options:["rain heavily", "snow lightly", "be windy", "clear up"],
+    answer:0,
+    explain_ru:"pour down = лить как из ведра.",
+    explain_en:"pour down = rain heavily."
+  },
+  {
+    id:"w-3", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"“clear up” (про погоду) означает…",
+    en:"“clear up” (weather) means…",
+    options:["stop being cloudy/rainy; become fine", "get worse", "start snowing", "become humid"],
+    answer:0,
+    explain_ru:"clear up = проясниться, улучшиться (погода).",
+    explain_en:"clear up = become clearer/fine."
+  },
+  {
+    id:"w-4", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"“freezing” — это…",
+    en:"“freezing” is…",
+    options:["very cold", "very hot", "very humid", "very windy"],
+    answer:0,
+    explain_ru:"freezing = очень холодно (мороз).",
+    explain_en:"freezing = extremely cold."
+  },
+  {
+    id:"w-5", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"“boiling hot” — это…",
+    en:"“boiling hot” is…",
+    options:["extremely hot", "slightly warm", "cloudy", "miserable weather"],
+    answer:0,
+    explain_ru:"boiling hot = очень жарко.",
+    explain_en:"boiling hot = extremely hot."
+  },
+  {
+    id:"w-6", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"“humid” — это…",
+    en:"“humid” is…",
+    options:["with a lot of moisture in the air", "very dry", "very cold", "windy"],
+    answer:0,
+    explain_ru:"humid = влажный (воздух).",
+    explain_en:"humid = air feels wet; lots of moisture."
+  },
+  {
+    id:"w-7", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"“windy” — это…",
+    en:"“windy” is…",
+    options:["with a lot of wind", "with a lot of rain", "with fog", "with snow"],
+    answer:0,
+    explain_ru:"windy = ветрено.",
+    explain_en:"windy = with a lot of wind."
+  },
+  {
+    id:"w-8", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"“grey and miserable” — ближе всего к…",
+    en:"“grey and miserable” is closest to…",
+    options:["dull, depressing weather", "sunny and warm", "windy but bright", "hot and humid"],
+    answer:0,
+    explain_ru:"miserable погода = унылая, неприятная.",
+    explain_en:"miserable weather = dull and depressing."
+  },
+  {
+    id:"w-9", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"Чтобы показать НЕуверенный прогноз, обычно используют…",
+    en:"To show you are less certain about a prediction, you use…",
+    options:["might / may; it'll probably", "must; have to", "past simple", "present perfect"],
+    answer:0,
+    explain_ru:"В тексте: it’ll probably…, it might clear up…",
+    explain_en:"From the text: it’ll probably…, it might…"
+  },
+  {
+    id:"w-10", cat:"Vocabulary / Weather",
+    type:"mcq",
+    ru:"Выбери правильное продолжение: “It’s going to be really windy, so …”",
+    en:"Choose the best ending: “It’s going to be really windy, so …”",
+    options:[
+      "we should take down the parasol or it'll blow away",
+      "I might even get a suntan",
+      "it might drop to minus 10°",
+      "I'll stay at home and keep out of the rain"
+    ],
+    answer:0,
+    explain_ru:"Это прямо из упражнения 9: windy → parasol may blow away.",
+    explain_en:"Exercise 9 match: windy → take down the parasol."
+  },
+
+  // --- Places of interest ---
+  {
+    id:"pl-1", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"“ruins” — это…",
+    en:"“ruins” are…",
+    options:["remains of old buildings", "a modern art gallery", "a type of weather", "a job"],
+    answer:0,
+    explain_ru:"Roman ruins = руины (остатки построек).",
+    explain_en:"ruins = remains of old buildings."
+  },
+  {
+    id:"pl-2", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"“palace” — это…",
+    en:"“palace” is…",
+    options:["a royal building", "a street market", "a lake", "a theme park ride"],
+    answer:0,
+    explain_ru:"royal palace = королевский дворец.",
+    explain_en:"palace = large royal building."
+  },
+  {
+    id:"pl-3", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"“old town” — это…",
+    en:"“old town” is…",
+    options:["the historic center of a city", "industrial district", "an airport", "a theme park"],
+    answer:0,
+    explain_ru:"old town = исторический центр.",
+    explain_en:"old town = historic city center."
+  },
+  {
+    id:"pl-4", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"“stalls” на рынке — это…",
+    en:"Market “stalls” are…",
+    options:["small stands/booths where people sell things", "hotels", "towers", "boats"],
+    answer:0,
+    explain_ru:"market with great stalls = рынок с классными торговыми палатками.",
+    explain_en:"stalls = small selling stands."
+  },
+  {
+    id:"pl-5", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"“theme park” — это…",
+    en:"“theme park” is…",
+    options:["an amusement park with rides", "a mosque", "a palace", "a lake"],
+    answer:0,
+    explain_ru:"theme park → rides, развлечения.",
+    explain_en:"theme park = amusement park with rides."
+  },
+  {
+    id:"pl-6", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"“mosque” — это…",
+    en:"“mosque” is…",
+    options:["a Muslim place of worship", "a castle", "a restaurant", "a market"],
+    answer:0,
+    explain_ru:"mosque = мечеть.",
+    explain_en:"mosque = Muslim place of worship."
+  },
+  {
+    id:"pl-7", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"“gallery” (modern art gallery) — это…",
+    en:"“gallery” is…",
+    options:["a place where art is shown", "a sports club", "a weather forecast", "a law degree"],
+    answer:0,
+    explain_ru:"art gallery = галерея.",
+    explain_en:"gallery = place to display art."
+  },
+  {
+    id:"pl-8", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"“nightlife” — это…",
+    en:"“nightlife” is…",
+    options:["entertainment at night (bars, clubs)", "old buildings", "mountains", "weather in winter"],
+    answer:0,
+    explain_ru:"nightlife = ночная жизнь.",
+    explain_en:"nightlife = bars/clubs etc."
+  },
+  {
+    id:"pl-9", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"В тексте про Kraków: Kazimierz — это…",
+    en:"In Kraków text: Kazimierz is…",
+    options:[
+      "the old Jewish district, now lively with nightlife",
+      "a salt mine",
+      "a modern art gallery only",
+      "a mountain tour"
+    ],
+    answer:0,
+    explain_ru:"В описании: old Jewish district, now lively area with excellent nightlife.",
+    explain_en:"It says: old Jewish district, now lively with nightlife."
+  },
+  {
+    id:"pl-10", cat:"Vocabulary / Places",
+    type:"mcq",
+    ru:"Auschwitz-Birkenau was…",
+    en:"Auschwitz-Birkenau was…",
+    options:["a Nazi concentration camp during World War II", "a theme park", "a palace", "a river walk"],
+    answer:0,
+    explain_ru:"Это прямо в листинге: Nazi concentration camp during WWII.",
+    explain_en:"Stated in the text."
+  },
+
+  // --- Suggestions / conversations ---
+  {
+    id:"sug-1", cat:"Speaking / Suggestions",
+    type:"mcq",
+    ru:"Фраза “Can you recommend anywhere?” — это…",
+    en:"“Can you recommend anywhere?” is…",
+    options:[
+      "asking for suggestions / recommendations",
+      "refusing politely",
+      "making an obligation",
+      "describing an injury"
+    ],
+    answer:0,
+    explain_ru:"recommend anywhere = посоветовать место.",
+    explain_en:"It’s asking for recommendations."
+  },
+  {
+    id:"sug-2", cat:"Speaking / Suggestions",
+    type:"mcq",
+    ru:"Как вежливо сказать, что тебе не нравится идея: “To be honest, I’m not really a big fan of …”?",
+    en:"Which phrase politely shows you don’t like something?",
+    options:[
+      "To be honest, I'm not really a big fan of …",
+      "That's my idea of hell!",
+      "I'm setting up …",
+      "I might clear up"
+    ],
+    answer:0,
+    explain_ru:"Эта фраза используется, чтобы мягко отказать/не согласиться.",
+    explain_en:"It politely expresses dislike."
+  },
+  {
+    id:"sug-3", cat:"Speaking / Suggestions",
+    type:"mcq",
+    ru:"Какая реплика обычно идёт после отказа и предлагает альтернативу: “That’s OK. In that case, how about …”",
+    en:"Which phrase offers an alternative after rejection?",
+    options:[
+      "That's OK. In that case, how about …",
+      "I told myself there's no way …",
+      "Have you been doing …?",
+      "It might reach 36°"
+    ],
+    answer:0,
+    explain_ru:"That’s OK. In that case, how about… = «Ок, тогда как насчёт…»",
+    explain_en:"It introduces an alternative suggestion."
+  },
+
+  // --- Disaster tourism reading (from first paragraph) ---
+  {
+    id:"dis-1", cat:"Reading / Disaster tourism",
+    type:"mcq",
+    ru:"Что автор называет “disaster tourism”?",
+    en:"What is “disaster tourism” in the text?",
+    options:[
+      "Companies organise disaster experiences for adventure (storms, war zones, etc.)",
+      "Visiting only beaches",
+      "Business trips only",
+      "Staying indoors because of rain"
+    ],
+    answer:0,
+    explain_ru:"Описано: компании организуют «disaster experiences»: штормы, war zone, Chernobyl, plane crash simulation.",
+    explain_en:"It describes organised disaster experiences for adventure."
+  },
+  {
+    id:"dis-2", cat:"Reading / Disaster tourism",
+    type:"mcq",
+    ru:"Пример “disaster experience” из текста:",
+    en:"An example of a “disaster experience” is:",
+    options:[
+      "a realistic plane crash simulation with a smoke-filled cabin",
+      "a museum of modern art",
+      "a judo tournament",
+      "a street market for bargains"
+    ],
+    answer:0,
+    explain_ru:"В тексте есть пример про симуляцию крушения самолёта.",
+    explain_en:"The text mentions a plane crash simulation."
+  },
+  {
+    id:"dis-3", cat:"Reading / Disaster tourism",
+    type:"mcq",
+    ru:"Чернобыль упомянут как…",
+    en:"Chernobyl is mentioned as…",
+    options:[
+      "a nuclear power plant that exploded in 1986",
+      "a mountain range",
+      "a market square",
+      "a theme park"
+    ],
+    answer:0,
+    explain_ru:"В тексте: nuclear power plant that exploded in 1986.",
+    explain_en:"The text says: nuclear power plant exploded in 1986."
+  },
+
+  // --- Chunks ---
+  {
+    id:"ch-1", cat:"Vocabulary / Chunks",
+    type:"mcq",
+    ru:"Что такое “chunk” в языке (по тексту)?",
+    en:"What is a “chunk” (as explained)?",
+    options:[
+      "a group of words that often go together",
+      "a single rare word",
+      "a grammar tense",
+      "a type of pronunciation"
+    ],
+    answer:0,
+    explain_ru:"В тексте: chunk is a group of words that often go together.",
+    explain_en:"Defined as a group of words that often go together."
+  },
+  {
+    id:"ch-2", cat:"Vocabulary / Chunks",
+    type:"mcq",
+    ru:"Выбери chunk из текста:",
+    en:"Choose a chunk from the text:",
+    options:[
+      "You might be surprised to learn that …",
+      "I am surprising learn",
+      "Surprised might learning",
+      "Learn surprise you"
+    ],
+    answer:0,
+    explain_ru:"Это пример chunk-а, который часто используют.",
+    explain_en:"This is a common reusable chunk."
+  },
+
+  // --- Injuries & problems vocab ---
+  {
+    id:"inj-1", cat:"Vocabulary / Injuries",
+    type:"mcq",
+    ru:"“bang your head” — это…",
+    en:"To “bang your head” means…",
+    options:["hit your head", "wash your head", "shake hands", "cut your hair"],
+    answer:0,
+    explain_ru:"bang = удариться. bang my head.",
+    explain_en:"bang = hit (by accident)."
+  },
+  {
+    id:"inj-2", cat:"Vocabulary / Injuries",
+    type:"mcq",
+    ru:"“break your leg” — это…",
+    en:"To “break your leg” means…",
+    options:["fracture your leg", "exercise your leg", "stretch your leg", "massage your leg"],
+    answer:0,
+    explain_ru:"break = сломать.",
+    explain_en:"break = fracture."
+  },
+  {
+    id:"inj-3", cat:"Vocabulary / Injuries",
+    type:"mcq",
+    ru:"“pull a muscle” — это…",
+    en:"To “pull a muscle” means…",
+    options:["strain a muscle", "train a muscle", "lose a muscle", "build a muscle"],
+    answer:0,
+    explain_ru:"pull a muscle = потянуть мышцу.",
+    explain_en:"pull a muscle = strain it."
+  },
+  {
+    id:"inj-4", cat:"Vocabulary / Injuries",
+    type:"mcq",
+    ru:"“stiff” (про ноги/тело после нагрузки) — это…",
+    en:"“stiff” after exercise means…",
+    options:["aching and difficult to move", "very relaxed", "very hungry", "very sleepy"],
+    answer:0,
+    explain_ru:"stiff = «деревянный», скованный.",
+    explain_en:"stiff = hard to move; sore."
+  },
+  {
+    id:"inj-5", cat:"Vocabulary / Injuries",
+    type:"mcq",
+    ru:"“unfit” — это…",
+    en:"“unfit” means…",
+    options:["not in good physical condition", "very athletic", "injured badly", "well-trained"],
+    answer:0,
+    explain_ru:"unfit = не в форме.",
+    explain_en:"unfit = not fit; poor condition."
+  },
+  {
+    id:"inj-6", cat:"Vocabulary / Injuries",
+    type:"mcq",
+    ru:"“injury” — это…",
+    en:"“injury” is…",
+    options:["physical damage/hurt", "a compliment", "a plan", "a suggestion"],
+    answer:0,
+    explain_ru:"injury = травма.",
+    explain_en:"injury = physical damage."
+  },
+  {
+    id:"inj-7", cat:"Vocabulary / Injuries",
+    type:"mcq",
+    ru:"“lose confidence” — это…",
+    en:"To “lose confidence” means…",
+    options:["stop believing in your ability", "become stronger", "win a prize", "start training"],
+    answer:0,
+    explain_ru:"confidence = уверенность.",
+    explain_en:"confidence = belief in yourself."
+  },
+
+  // --- Present perfect continuous vs past simple for duration ---
+  {
+    id:"dur-1", cat:"Grammar / Duration (PPC vs Past)",
+    type:"mcq",
+    ru:"“How long have you been doing judo?” — какое это время?",
+    en:"“How long have you been doing judo?” is which tense?",
+    options:["Present perfect continuous", "Present simple", "Past simple", "Future"],
+    answer:0,
+    explain_ru:"have been doing = Present Perfect Continuous.",
+    explain_en:"have been doing = Present Perfect Continuous."
+  },
+  {
+    id:"dur-2", cat:"Grammar / Duration (PPC vs Past)",
+    type:"mcq",
+    ru:"“How long were you out of action?” — о чём это?",
+    en:"“How long were you out of action?” refers to…",
+    options:["a finished period in the past", "an activity continuing now", "a future plan", "a stative verb rule"],
+    answer:0,
+    explain_ru:"Past simple: period закончился (didn't do anything for a couple of months).",
+    explain_en:"Past simple: finished duration."
+  },
+  {
+    id:"dur-3", cat:"Grammar / Duration (PPC vs Past)",
+    type:"mcq",
+    ru:"Почему НЕ говорят “How long have I been knowing you?”",
+    en:"Why don’t we say “How long have I been knowing you?”",
+    options:[
+      "Know is a stative verb; we use present perfect simple: How long have I known you?",
+      "Because it is too informal",
+      "Because it is future tense",
+      "Because 'know' has no past form"
+    ],
+    answer:0,
+    explain_ru:"know — stative verb, обычно не в continuous: How long have I known you?",
+    explain_en:"'know' is stative; use present perfect simple."
+  },
+  {
+    id:"dur-4", cat:"Grammar / Duration (PPC vs Past)",
+    type:"mcq",
+    ru:"Разница for/since: “for” — это…",
+    en:"Difference for/since: “for” is used with…",
+    options:["a period of time (two years)", "a starting point (2019)", "a future obligation", "a place"],
+    answer:0,
+    explain_ru:"for + период; since + точка начала.",
+    explain_en:"for + duration; since + start point."
+  },
+  {
+    id:"dur-5", cat:"Grammar / Duration (PPC vs Past)",
+    type:"mcq",
+    ru:"Разница for/since: “since” — это…",
+    en:"Difference for/since: “since” is used with…",
+    options:["a starting point (2004, Monday)", "a duration (two years)", "a prediction", "an arrangement"],
+    answer:0,
+    explain_ru:"since + момент начала.",
+    explain_en:"since + start point."
+  },
+
+  // --- Review 2 grammar selections ---
+  {
+    id:"rev-1", cat:"Review / Grammar choices",
+    type:"mcq",
+    ru:"Выбери правильно: “I ___ some time in Spain a few years ago.”",
+    en:"Choose: “I ___ some time in Spain a few years ago.”",
+    options:["spent", "have spent"],
+    answer:0,
+    explain_ru:"Есть конкретное время “a few years ago” → Past Simple: spent.",
+    explain_en:"Specific past time → past simple: spent."
+  },
+  {
+    id:"rev-2", cat:"Review / Grammar choices",
+    type:"mcq",
+    ru:"Выбери правильно: “They said it’s going to ___ most of the day.”",
+    en:"Choose: “They said it’s going to ___ most of the day.”",
+    options:["rain", "raining"],
+    answer:0,
+    explain_ru:"be going to + infinitive: going to rain.",
+    explain_en:"be going to + base verb: rain."
+  },
+  {
+    id:"rev-3", cat:"Review / Grammar choices",
+    type:"mcq",
+    ru:"Выбери правильно: “Do you ___ to the cinema much?”",
+    en:"Choose: “Do you ___ to the cinema much?”",
+    options:["go", "are you going"],
+    answer:0,
+    explain_ru:"Общая привычка → Present Simple: Do you go … much?",
+    explain_en:"Habit → present simple."
+  },
+  {
+    id:"rev-4", cat:"Review / Grammar choices",
+    type:"mcq",
+    ru:"Выбери правильно: “Hardly never / ever” — что правильно?",
+    en:"Choose the correct: “Hardly ___.”",
+    options:["ever", "never"],
+    answer:0,
+    explain_ru:"Правильно: hardly ever (почти никогда).",
+    explain_en:"Correct collocation: hardly ever."
+  },
+
+  // --- Collocations (review vocabulary) ---
+  {
+    id:"col-1", cat:"Vocabulary / Collocations",
+    type:"mcq",
+    ru:"Правильная коллокация: “pour …”",
+    en:"Correct collocation: “pour …”",
+    options:["down", "up", "over", "out"],
+    answer:0,
+    explain_ru:"pour down = лить (сильно).",
+    explain_en:"pour down = rain heavily."
+  },
+  {
+    id:"col-2", cat:"Vocabulary / Collocations",
+    type:"mcq",
+    ru:"Правильная коллокация: “hire …”",
+    en:"Correct collocation: “hire …”",
+    options:["a bike / a boat", "a mood", "a description", "my head"],
+    answer:0,
+    explain_ru:"hire = брать напрокат: hire a bike/boat.",
+    explain_en:"hire = rent: hire a bike/boat."
+  },
+  {
+    id:"col-3", cat:"Vocabulary / Collocations",
+    type:"mcq",
+    ru:"Правильная коллокация: “restore …”",
+    en:"Correct collocation: “restore …”",
+    options:["a royal palace", "with rain", "my leg", "a run"],
+    answer:0,
+    explain_ru:"restore a royal palace (восстановить).",
+    explain_en:"restore a palace/building."
+  },
+  {
+    id:"col-4", cat:"Vocabulary / Collocations",
+    type:"mcq",
+    ru:"Правильная коллокация: “bang …”",
+    en:"Correct collocation: “bang …”",
+    options:["my head", "with rain", "a meal", "a storm"],
+    answer:0,
+    explain_ru:"bang my head.",
+    explain_en:"bang my head."
+  },
+  {
+    id:"col-5", cat:"Vocabulary / Collocations",
+    type:"mcq",
+    ru:"Правильная коллокация: “go for …”",
+    en:"Correct collocation: “go for …”",
+    options:["a run", "my mood", "by fire", "my head"],
+    answer:0,
+    explain_ru:"go for a run = сходить на пробежку.",
+    explain_en:"go for a run is common."
+  },
+
+  // --- Istanbul text (gap by initials) ---
+  {
+    id:"ist-1", cat:"Review / Istanbul text",
+    type:"input",
+    ru:"Заполни по первым буквам: “We just assumed it was going to be ___ hot.” (bo__)",
+    en:"Fill: “We just assumed it was going to be ___ hot.” (bo__)",
+    answerText:"boiling",
+    accept:["boiling","boiling hot"],
+    explain_ru:"boiling hot = очень жарко.",
+    explain_en:"boiling hot = extremely hot."
+  },
+  {
+    id:"ist-2", cat:"Review / Istanbul text",
+    type:"input",
+    ru:"Заполни: “When we arrived though, it was quite ___ and cloudy.” (gr__)",
+    en:"Fill: “When we arrived though, it was quite ___ and cloudy.” (gr__)",
+    answerText:"grey",
+    accept:["grey"],
+    explain_ru:"grey and cloudy = серо и облачно.",
+    explain_en:"grey = dull/overcast."
+  },
+  {
+    id:"ist-3", cat:"Review / Istanbul text",
+    type:"input",
+    ru:"Заполни: “... at night it turned out to be quite ___.” (ch___)",
+    en:"Fill: “... at night it turned out to be quite ___.” (ch___)",
+    answerText:"chilly",
+    accept:["chilly"],
+    explain_ru:"chilly = прохладно.",
+    explain_en:"chilly = a bit cold."
+  },
+  {
+    id:"ist-4", cat:"Review / Istanbul text",
+    type:"mcq",
+    ru:"Topkapi Palace — это…",
+    en:"Topkapi Palace is…",
+    options:["where the Sultan lived", "a street market", "a salt mine", "a judo school"],
+    answer:0,
+    explain_ru:"В тексте: Topkapi Palace where the Sultan lived.",
+    explain_en:"From the text."
+  },
+  {
+    id:"ist-5", cat:"Review / Istanbul text",
+    type:"mcq",
+    ru:"Blue Mosque — это…",
+    en:"The Blue Mosque is…",
+    options:["a mosque in Istanbul", "a theme park", "a nightclub", "a mountain"],
+    answer:0,
+    explain_ru:"Mosque = мечеть (в тексте: famous Blue Mosque).",
+    explain_en:"Blue Mosque is a mosque."
+  },
+  {
+    id:"ist-6", cat:"Review / Istanbul text",
+    type:"mcq",
+    ru:"Монумент на Taksim Square commemorates…",
+    en:"The monument in Taksim Square commemorates…",
+    options:["the foundation of the Turkish Republic", "World War II", "a plane crash", "a judo champion"],
+    answer:0,
+    explain_ru:"В тексте: commemorates the foundation of the Turkish Republic.",
+    explain_en:"From the text."
+  },
+
+  // --- Extra: phrasebank (bump into conversation) ---
+  {
+    id:"ph-1", cat:"Speaking / Useful phrases",
+    type:"mcq",
+    ru:"Как сказать: «Я не видел(а) тебя целую вечность»?",
+    en:"How do you say “Я не видел(а) тебя целую вечность”?",
+    options:[
+      "I haven't seen you for ages.",
+      "I'm thinking of going sightseeing.",
+      "I train on Saturdays.",
+      "You might be surprised to learn that…"
+    ],
+    answer:0,
+    explain_ru:"Фраза из блока roleplay: I haven't seen you for ages.",
+    explain_en:"It’s in the roleplay language box."
+  },
+  {
+    id:"ph-2", cat:"Speaking / Useful phrases",
+    type:"mcq",
+    ru:"Как сказать: «Надо как-нибудь снова встретиться»?",
+    en:"How do you say “Надо как-нибудь снова встретиться”?",
+    options:[
+      "We must meet again sometime.",
+      "I told myself there's no way.",
+      "It might clear up next week.",
+      "How long were you out of action?"
+    ],
+    answer:0,
+    explain_ru:"Фраза из блока: We must meet again sometime.",
+    explain_en:"From the roleplay phrases."
+  },
+];
+
+// Pad to ~100 by adding variant questions programmatically from vocabulary lists
+const VOCAB = [
+  // word, ru, example, cat
+  {en:"bump into", ru:"неожиданно встретить", ex:"I bumped into an old friend in the street.", cat:"People / Meeting"},
+  {en:"single", ru:"не женат/не замужем", ex:"My aunt is single.", cat:"People / Talking about people"},
+  {en:"separated", ru:"разошлись (живут отдельно)", ex:"His parents are separated.", cat:"People / Talking about people"},
+  {en:"only child", ru:"единственный ребёнок", ex:"She's an only child.", cat:"People / Talking about people"},
+  {en:"twin", ru:"близнец", ex:"He's a twin.", cat:"People / Talking about people"},
+  {en:"civil servant", ru:"госслужащий", ex:"She works as a civil servant.", cat:"People / Talking about people"},
+  {en:"translator", ru:"переводчик", ex:"He works as a translator.", cat:"People / Talking about people"},
+  {en:"depressed", ru:"в депрессии", ex:"People can feel depressed or isolated.", cat:"Reading / Free Hugs"},
+  {en:"isolated", ru:"изолированный / одинокий", ex:"He felt isolated.", cat:"Reading / Free Hugs"},
+  {en:"meaningful connections", ru:"значимые связи", ex:"It can be hard to make meaningful connections.", cat:"Reading / Free Hugs"},
+  {en:"desperate attempt", ru:"отчаянная попытка", ex:"It started as a desperate attempt to change his life.", cat:"Reading / Free Hugs"},
+  {en:"miserable", ru:"несчастный, ужасный", ex:"He had a miserable year.", cat:"Reading / Free Hugs"},
+  {en:"unemployed", ru:"безработный", ex:"He was unemployed.", cat:"Reading / Free Hugs"},
+  {en:"hide away", ru:"прятаться, замкнуться", ex:"He spent months hiding away from the world.", cat:"Reading / Free Hugs"},
+  {en:"cardboard sign", ru:"картонная табличка", ex:"He held a cardboard sign.", cat:"Reading / Free Hugs"},
+  {en:"wallet", ru:"кошелёк", ex:"He left his wallet at home.", cat:"Reading / Free Hugs"},
+  {en:"anniversary", ru:"годовщина", ex:"It was the first anniversary of her daughter's death.", cat:"Reading / Free Hugs"},
+  {en:"celebrity", ru:"знаменитость", ex:"He became a celebrity.", cat:"Reading / Free Hugs"},
+  {en:"go global", ru:"стать мировым", ex:"The campaign went global.", cat:"Reading / Free Hugs"},
+  {en:"counselling", ru:"психологическая помощь/консультация", ex:"They were too embarrassed to seek counselling.", cat:"Reading / Free Hugs"},
+  {en:"present simple", ru:"настоящее простое (привычки/факты)", ex:"I work in sales.", cat:"Grammar / Present simple vs continuous"},
+  {en:"present continuous", ru:"настоящее длительное (сейчас/временно/договорённость)", ex:"We're setting up a website.", cat:"Grammar / Present simple vs continuous"},
+  {en:"at the moment", ru:"в данный момент", ex:"I'm working really hard at the moment.", cat:"Grammar / Present simple vs continuous"},
+  {en:"be going to", ru:"собираться (план/намерение)", ex:"I'm going to travel round Vietnam.", cat:"Grammar / Future plans"},
+  {en:"might", ru:"возможно (не уверен)", ex:"I might take a short holiday.", cat:"Grammar / Future plans"},
+  {en:"forecast", ru:"прогноз (погоды)", ex:"What's the forecast for tomorrow?", cat:"Vocabulary / Weather"},
+  {en:"pour down", ru:"лить как из ведра", ex:"It's going to pour down tomorrow.", cat:"Vocabulary / Weather"},
+  {en:"clear up", ru:"проясниться (о погоде)", ex:"It might clear up by evening.", cat:"Vocabulary / Weather"},
+  {en:"boiling hot", ru:"очень жарко", ex:"It's going to be boiling hot all week.", cat:"Vocabulary / Weather"},
+  {en:"freezing", ru:"морозно", ex:"It'll be freezing at night.", cat:"Vocabulary / Weather"},
+  {en:"humid", ru:"влажный", ex:"Hot and humid during the day.", cat:"Vocabulary / Weather"},
+  {en:"theme park", ru:"парк аттракционов", ex:"They've got some great rides there.", cat:"Vocabulary / Places"},
+  {en:"ruins", ru:"руины", ex:"There are Roman ruins all over this area.", cat:"Vocabulary / Places"},
+  {en:"palace", ru:"дворец", ex:"An old royal palace by the river.", cat:"Vocabulary / Places"},
+  {en:"old town", ru:"старый город (исторический центр)", ex:"A medieval square in the old town.", cat:"Vocabulary / Places"},
+  {en:"stalls", ru:"торговые палатки", ex:"A market with great stalls.", cat:"Vocabulary / Places"},
+  {en:"nightlife", ru:"ночная жизнь", ex:"A lively area with excellent nightlife.", cat:"Vocabulary / Places"},
+  {en:"bang my head", ru:"удариться головой", ex:"I fell off my bike and banged my head.", cat:"Vocabulary / Injuries"},
+  {en:"break my leg", ru:"сломать ногу", ex:"I broke my leg playing football.", cat:"Vocabulary / Injuries"},
+  {en:"pull a muscle", ru:"потянуть мышцу", ex:"I pulled a muscle because I didn't warm up.", cat:"Vocabulary / Injuries"},
+  {en:"stiff", ru:"скованный, затёкший", ex:"My legs are stiff this morning.", cat:"Vocabulary / Injuries"},
+  {en:"unfit", ru:"не в форме", ex:"I'm so unfit I had to stop after ten minutes.", cat:"Vocabulary / Injuries"},
+  {en:"confidence", ru:"уверенность", ex:"I lost a lot of confidence.", cat:"Vocabulary / Injuries"},
+];
+
+// Auto-generate extra questions from vocab to reach ~100
+const autoQs = [];
+VOCAB.forEach((v, idx) => {
+  autoQs.push({
+    id:`vru-${idx}`, cat:v.cat, type:"mcq",
+    ru:`Переведи на русский: “${v.en}”`,
+    en:`Translate into Russian: “${v.en}”`,
+    options: shuffleArr([v.ru, "—", "—", "—"].map((x,i)=> i===0?x:makeDistractorRu(v.en, v.ru, i))),
+    answerText:v.ru,
+    // answer index computed after shuffle
+    explain_ru:`Пример: ${v.ex}`,
+    explain_en:`Example: ${v.ex}`
+  });
+  autoQs[autoQs.length-1].answer = autoQs[autoQs.length-1].options.indexOf(v.ru);
+
+  autoQs.push({
+    id:`ven-${idx}`, cat:v.cat, type:"mcq",
+    ru:`Переведи на английский: “${v.ru}”`,
+    en:`Translate into English: “${v.ru}”`,
+    options: shuffleArr([v.en, ...makeDistractorEn(v.en)]),
+    answerText:v.en,
+    explain_ru:`Пример: ${v.ex}`,
+    explain_en:`Example: ${v.ex}`
+  });
+  autoQs[autoQs.length-1].answer = autoQs[autoQs.length-1].options.indexOf(v.en);
+});
+
+function makeDistractorRu(en, ru, i){
+  const bank = ["прогноз", "парк аттракционов", "руины", "дворец", "ночная жизнь", "возможно", "в данный момент", "единственный ребёнок", "близнец", "госслужащий", "переводчик", "морозно", "очень жарко", "влажный", "проясниться", "лить как из ведра", "удариться головой", "сломать ногу", "потянуть мышцу", "скованный"];
+  let pick = bank[(en.length*i + ru.length) % bank.length];
+  if(pick===ru) pick = bank[(bank.indexOf(pick)+3)%bank.length];
+  return pick;
+}
+function makeDistractorEn(correct){
+  const bank = ["forecast","theme park","ruins","palace","nightlife","might","at the moment","only child","twin","civil servant","translator","freezing","boiling hot","humid","clear up","pour down","bang my head","break my leg","pull a muscle","stiff","unfit","confidence","depressed","isolated"];
+  const arr = [];
+  for(let i=0;i<3;i++){
+    let pick = bank[(correct.length*(i+3) + i*7) % bank.length];
+    if(pick===correct) pick = bank[(bank.indexOf(pick)+5)%bank.length];
+    arr.push(pick);
+  }
+  return arr;
+}
+
+const ALL_QUESTIONS = [...QUESTIONS, ...autoQs]; // should be around or above 100 now
+
+/* =========================
+   APP STATE
+   ========================= */
+const LS_KEY = "outcomes_quiz_state_v1";
+const state = loadState() || {
+  stats: {correct:0, wrong:0, streak:0},
+  mistakes: {}, // id -> count wrong
+};
+
+let session = {
+  mode:"quiz",
+  category:"all",
+  limit:100,
+  shuffle:true,
+  tts:true,
+  rate:1.0,
+  pool:[],
+  index:0,
+  current:null,
+  answered:false,
+  sessionCorrect:0,
+  sessionWrong:0,
+  sessionStreak:0,
+};
+
+const el = (id)=>document.getElementById(id);
+
+const modeEl = el("mode");
+const catEl = el("category");
+const limitEl = el("limit");
+const shuffleEl = el("shuffle");
+const ttsEl = el("tts");
+const rateEl = el("rate");
+const startBtn = el("start");
+const nextBtn = el("next");
+const revealBtn = el("reveal");
+const resetStatsBtn = el("resetStats");
+const panel = el("panel");
+const panelTitle = el("panelTitle");
+const panelHint = el("panelHint");
+
+const kpiProgress = el("kpiProgress");
+const kpiCategory = el("kpiCategory");
+const kpiScore = el("kpiScore");
+const kpiDetails = el("kpiDetails");
+const kpiStreak = el("kpiStreak");
+const bar = el("bar");
+const voiceStatus = el("voiceStatus");
+
+/* =========================
+   UTIL
+   ========================= */
+function shuffleArr(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+function norm(s){
+  return (s||"").toLowerCase().trim()
+    .replace(/[’']/g,"'")
+    .replace(/\s+/g," ");
+}
+function saveState(){
+  localStorage.setItem(LS_KEY, JSON.stringify(state));
+}
+function loadState(){
+  try{ return JSON.parse(localStorage.getItem(LS_KEY)); }catch{ return null; }
+}
+
+function updateVoiceStatus(){
+  const ok = ("speechSynthesis" in window);
+  voiceStatus.textContent = ok ? "Voice: available" : "Voice: not supported";
+}
+updateVoiceStatus();
+
+function speakEN(text){
+  if(!session.tts) return;
+  if(!("speechSynthesis" in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-US";
+  u.rate = Number(session.rate) || 1.0;
+  // choose an English voice if possible
+  const voices = speechSynthesis.getVoices();
+  const enVoice = voices.find(v=>/^en(-|_)/i.test(v.lang)) || voices.find(v=>/English/i.test(v.name));
+  if(enVoice) u.voice = enVoice;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(u);
+}
+
+/* =========================
+   BUILD CATEGORY LIST
+   ========================= */
+function buildCategories(){
+  const cats = Array.from(new Set(ALL_QUESTIONS.map(q=>q.cat))).sort();
+  catEl.innerHTML = `<option value="all">Все</option>` + cats.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m]));
+}
+buildCategories();
+
+/* =========================
+   SESSION SETUP
+   ========================= */
+function buildPool(){
+  const mode = session.mode;
+  const cat = session.category;
+
+  let base = ALL_QUESTIONS.filter(q => cat==="all" ? true : q.cat===cat);
+
+  if(mode==="mistakes"){
+    base = base.filter(q => state.mistakes[q.id]);
+  }
+
+  if(session.shuffle) base = shuffleArr(base);
+
+  if(mode==="quiz"){
+    const lim = Math.max(10, Math.min(Number(session.limit)||100, base.length));
+    base = base.slice(0, lim);
+  }
+  // flash mode uses vocab, but we will build from VOCAB filtered by cat
+  return base;
+}
+
+function resetSessionCounters(){
+  session.index = 0;
+  session.current = null;
+  session.answered = false;
+  session.sessionCorrect = 0;
+  session.sessionWrong = 0;
+  session.sessionStreak = 0;
+}
+
+/* =========================
+   RENDER
+   ========================= */
+function setHeaderByMode(){
+  if(session.mode==="quiz"){ panelTitle.textContent="Quiz"; panelHint.textContent="Выбирай вариант или вводи ответ"; }
+  if(session.mode==="mistakes"){ panelTitle.textContent="Ошибки"; panelHint.textContent="Повторяем только то, где были ошибки"; }
+  if(session.mode==="flash"){ panelTitle.textContent="Flashcards"; panelHint.textContent="Нажми “Показать/Скрыть” для перевода и примера"; }
+}
+
+function updateKPIs(){
+  const total = session.pool.length || 0;
+  const done = Math.min(session.index, total);
+  kpiProgress.textContent = `${done} / ${total}`;
+  kpiCategory.textContent = `Категория: ${session.category==="all" ? "Все" : session.category}`;
+  const answered = session.sessionCorrect + session.sessionWrong;
+  const pct = answered ? Math.round((session.sessionCorrect/answered)*100) : 0;
+  kpiScore.textContent = `${pct}%`;
+  kpiDetails.textContent = `Верно: ${session.sessionCorrect} • Ошибки: ${session.sessionWrong}`;
+  kpiStreak.textContent = `Серия: ${session.sessionStreak}`;
+  bar.style.width = total ? `${Math.round((done/total)*100)}%` : "0%";
+}
+
+function renderEmpty(msg, detail){
+  panel.innerHTML = `
+    <div class="flash">
+      <div class="front">${escapeHtml(msg)}</div>
+      <div class="meta">${escapeHtml(detail||"")}</div>
+    </div>
+  `;
+}
+
+function renderQuestion(){
+  if(session.mode==="flash"){ renderFlashcard(); return; }
+
+  if(session.index >= session.pool.length){
+    const answered = session.sessionCorrect + session.sessionWrong;
+    const pct = answered ? Math.round((session.sessionCorrect/answered)*100) : 0;
+    renderEmpty("Готово!", `Результат: ${pct}% • Верно: ${session.sessionCorrect}, Ошибки: ${session.sessionWrong}. Можно перезапустить или включить режим “Ошибки”.`);
+    nextBtn.disabled = true;
+    revealBtn.disabled = true;
+    updateKPIs();
+    return;
+  }
+
+  session.current = session.pool[session.index];
+  session.answered = false;
+
+  const q = session.current;
+  const meta = `<span class="tag">${escapeHtml(q.cat)}</span><span class="tag">${escapeHtml(q.type.toUpperCase())}</span>`;
+
+  let body = `
+    <div class="qmeta">${meta}<span class="tag">#${session.index+1}</span></div>
+    <h3 class="qtitle">${escapeHtml(q.ru)}</h3>
+    <p class="qsub">${escapeHtml(q.en)}</p>
+  `;
+
+  if(q.type==="mcq"){
+    const opts = q.options.map((o,i)=>`
+      <button class="opt" data-i="${i}">${escapeHtml(o)}</button>
+    `).join("");
+    body += `<div class="options">${opts}</div>`;
+  }else if(q.type==="input"){
+    body += `
+      <div class="answerbox">
+        <input id="freeInput" type="text" placeholder="Введи ответ (EN) — можно с сокращениями" autocomplete="off" />
+        <button id="submitInput" class="good">Ответить</button>
+      </div>
+      <div class="hint">Подсказка: сокращения типа I'm / it's принимаются.</div>
+    `;
+  }
+
+  body += `
+    <div class="feedback" id="feedback">
+      <div class="fbline">
+        <div id="fbState" class="fbok">OK</div>
+        <div class="hint">Правильный ответ: <span id="fbAnswer"></span></div>
+      </div>
+      <div class="explain" id="fbExplain"></div>
+      <div class="divider"></div>
+      <div class="hint">Заметки:</div>
+      <div class="mini" id="fbMini"></div>
+    </div>
+  `;
+
+  panel.innerHTML = body;
+
+  // TTS: speak EN prompt
+  speakEN(q.en);
+
+  if(q.type==="mcq"){
+    panel.querySelectorAll(".opt").forEach(btn=>{
+      btn.addEventListener("click", ()=>handleMCQ(Number(btn.dataset.i), btn));
+    });
+  }else{
+    const inp = el("freeInput");
+    const sub = el("submitInput");
+    const go = ()=>handleInput(inp.value);
+    sub.addEventListener("click", go);
+    inp.addEventListener("keydown",(e)=>{ if(e.key==="Enter") go(); });
+    setTimeout(()=>inp.focus(), 40);
+  }
+
+  nextBtn.disabled = true;
+  revealBtn.disabled = false;
+  updateKPIs();
+}
+
+function renderFlashcard(){
+  // Build flash deck from VOCAB (filtered by category)
+  const cat = session.category;
+  let deck = VOCAB.filter(v => cat==="all" ? true : v.cat===cat);
+  if(session.shuffle) deck = shuffleArr(deck);
+
+  if(deck.length===0){
+    renderEmpty("Нет карточек для этой категории.", "Выбери другую категорию или 'Все'.");
+    nextBtn.disabled = true;
+    revealBtn.disabled = true;
+    return;
+  }
+
+  // Use session.pool as deck index mapping
+  if(!session.pool.length){
+    session.pool = deck.map((v,i)=>({id:`flash-${i}`, ...v}));
+  }
+  if(session.index >= session.pool.length){
+    session.index = 0;
+  }
+  const c = session.pool[session.index];
+
+  panel.innerHTML = `
+    <div class="qmeta">
+      <span class="tag">${escapeHtml(c.cat)}</span>
+      <span class="tag">FLASHCARD</span>
+      <span class="tag">#${session.index+1} / ${session.pool.length}</span>
+    </div>
+
+    <div class="flash" id="flashCard">
+      <div class="front">${escapeHtml(c.en)}</div>
+      <div class="meta">Скажи вслух / вспомни перевод</div>
+      <div class="back">
+        <div class="divider"></div>
+        <div><strong>Перевод:</strong> ${escapeHtml(c.ru)}</div>
+        <div class="meta"><strong>Example:</strong> ${escapeHtml(c.ex)}</div>
+      </div>
+    </div>
+
+    <div class="btnrow" style="margin-top:12px">
+      <button id="toggleCard" class="secondary">Показать / Скрыть</button>
+      <button id="sayWord" class="secondary">Озвучить (EN)</button>
+      <button id="markHard" class="danger">Сложно (в ошибки)</button>
+      <button id="markEasy" class="good">Легко</button>
+    </div>
+  `;
+
+  // TTS word
+  speakEN(c.en);
+
+  el("toggleCard").addEventListener("click", ()=>{
+    el("flashCard").classList.toggle("show");
+  });
+  el("sayWord").addEventListener("click", ()=>speakEN(c.en + ". " + c.ex));
+  el("markHard").addEventListener("click", ()=>{
+    state.mistakes[c.id] = (state.mistakes[c.id]||0)+1;
+    saveState();
+    nextCard();
+  });
+  el("markEasy").addEventListener("click", ()=>nextCard());
+
+  nextBtn.disabled = false;
+  revealBtn.disabled = true;
+  updateKPIs();
+}
+
+/* =========================
+   ANSWER HANDLERS
+   ========================= */
+function showFeedback(ok, correctText, extraMini){
+  const fb = el("feedback");
+  fb.classList.add("show");
+  const st = el("fbState");
+  st.textContent = ok ? "Верно" : "Неверно";
+  st.className = ok ? "fbok" : "fbno";
+  el("fbAnswer").textContent = correctText;
+
+  const q = session.current;
+  el("fbExplain").textContent = `${q.explain_ru || ""}${q.explain_ru && q.explain_en ? " / " : ""}${q.explain_en || ""}`;
+  el("fbMini").textContent = extraMini || "";
+}
+
+function handleMCQ(choiceIndex, btn){
+  if(session.answered) return;
+  session.answered = true;
+
+  const q = session.current;
+  const correctIndex = q.answer;
+  const correctText = q.options[correctIndex];
+
+  const buttons = Array.from(panel.querySelectorAll(".opt"));
+  buttons.forEach((b,i)=>{
+    b.disabled = true;
+    if(i===correctIndex) b.classList.add("correct");
+  });
+
+  const ok = choiceIndex === correctIndex;
+  if(!ok){
+    btn.classList.add("wrong");
+    onWrong(q);
+  }else{
+    onCorrect(q);
+  }
+
+  showFeedback(ok, correctText, buildMiniNotes(q, correctText));
+  nextBtn.disabled = false;
+  revealBtn.disabled = true;
+}
+
+function handleInput(userValue){
+  if(session.answered) return;
+  session.answered = true;
+
+  const q = session.current;
+  const user = norm(userValue);
+
+  const accepts = (q.accept || [q.answerText]).map(norm);
+  const ok = accepts.includes(user);
+
+  if(!ok) onWrong(q); else onCorrect(q);
+
+  // disable
+  const inp = el("freeInput");
+  const sub = el("submitInput");
+  if(inp) inp.disabled = true;
+  if(sub) sub.disabled = true;
+
+  showFeedback(ok, q.answerText || "(см. ключ)", buildMiniNotes(q, q.answerText || ""));
+  nextBtn.disabled = false;
+  revealBtn.disabled = true;
+
+  if(!ok){
+    // also show the most similar accepted
+    const hint = accepts[0];
+    // optionally speak correct answer
+    speakEN(q.answerText || hint);
+  }
+}
+
+function buildMiniNotes(q, correctText){
+  // compact bilingual notes / memory hooks
+  if(q.cat.includes("Weather")){
+    return `Pattern: It might / may + V\nExample: It might clear up.\nKey: ${correctText}`;
+  }
+  if(q.cat.includes("Present simple")){
+    return `Habit: Present simple → I work / I train.\nTemporary/now: Present continuous → I'm working.\nKey: ${correctText}`;
+  }
+  if(q.cat.includes("Future plans")){
+    return `Definite: present continuous / be going to\nLess certain: might / probably\nObligation: have to\nKey: ${correctText}`;
+  }
+  if(q.cat.includes("Injuries")){
+    return `Useful: bang your head / break your leg / pull a muscle\nWarm up = размяться\nKey: ${correctText}`;
+  }
+  return `Key: ${correctText}`;
+}
+
+function onCorrect(q){
+  session.sessionCorrect++;
+  session.sessionStreak++;
+  state.stats.correct++;
+  state.stats.streak++;
+  saveState();
+  updateKPIs();
+}
+function onWrong(q){
+  session.sessionWrong++;
+  session.sessionStreak = 0;
+  state.stats.wrong++;
+  state.stats.streak = 0;
+  state.mistakes[q.id] = (state.mistakes[q.id]||0) + 1;
+  saveState();
+  updateKPIs();
+}
+
+function revealAnswer(){
+  const q = session.current;
+  if(!q || session.answered) return;
+
+  // Mark as wrong when revealing (as learning rule)
+  session.answered = true;
+  onWrong(q);
+
+  if(q.type==="mcq"){
+    const correctIndex = q.answer;
+    const buttons = Array.from(panel.querySelectorAll(".opt"));
+    buttons.forEach((b,i)=>{
+      b.disabled = true;
+      if(i===correctIndex) b.classList.add("correct");
+    });
+    showFeedback(false, q.options[correctIndex], buildMiniNotes(q, q.options[correctIndex]));
+  }else{
+    const inp = el("freeInput");
+    const sub = el("submitInput");
+    if(inp) inp.disabled = true;
+    if(sub) sub.disabled = true;
+    showFeedback(false, q.answerText || "(см. ключ)", buildMiniNotes(q, q.answerText || ""));
+    speakEN(q.answerText || q.en);
+  }
+
+  nextBtn.disabled = false;
+  revealBtn.disabled = true;
+}
+
+function nextQuestion(){
+  session.index++;
+  updateKPIs();
+  renderQuestion();
+}
+
+function nextCard(){
+  session.index++;
+  updateKPIs();
+  renderFlashcard();
+}
+
+/* =========================
+   CONTROL WIRING
+   ========================= */
+function applyUIToSession(){
+  session.mode = modeEl.value;
+  session.category = catEl.value;
+  session.limit = Number(limitEl.value) || 100;
+  session.shuffle = shuffleEl.checked;
+  session.tts = ttsEl.checked;
+  session.rate = Number(rateEl.value) || 1.0;
+}
+
+function start(){
+  applyUIToSession();
+  setHeaderByMode();
+  resetSessionCounters();
+
+  if(session.mode==="flash"){
+    session.pool = []; // build inside renderFlashcard
+    nextBtn.disabled = false;
+    revealBtn.disabled = true;
+    renderFlashcard();
+    return;
+  }
+
+  session.pool = buildPool();
+  if(session.pool.length===0){
+    const msg = session.mode==="mistakes" ? "Нет ошибок для повторения." : "Нет вопросов для выбранной категории.";
+    renderEmpty(msg, "Выбери другую категорию или режим Quiz.");
+    nextBtn.disabled = true;
+    revealBtn.disabled = true;
+    updateKPIs();
+    return;
+  }
+  renderQuestion();
+}
+
+startBtn.addEventListener("click", start);
+nextBtn.addEventListener("click", ()=>{
+  if(session.mode==="flash") nextCard();
+  else nextQuestion();
+});
+revealBtn.addEventListener("click", revealAnswer);
+
+resetStatsBtn.addEventListener("click", ()=>{
+  state.stats = {correct:0, wrong:0, streak:0};
+  state.mistakes = {};
+  saveState();
+  start();
+});
+
+modeEl.addEventListener("change", ()=>{ applyUIToSession(); setHeaderByMode(); start(); });
+catEl.addEventListener("change", ()=>{ applyUIToSession(); start(); });
+
+/* Load voices asynchronously in some browsers */
+if ("speechSynthesis" in window){
+  speechSynthesis.onvoiceschanged = ()=>updateVoiceStatus();
+}
+
+start(); // auto start on load
+</script>
+</body>
+</html>
