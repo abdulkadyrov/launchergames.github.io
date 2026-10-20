@@ -75,9 +75,31 @@
     }
     .status.live { color: #061a10; background: var(--good); }
     .status.paused { color: #251900; background: var(--warning); }
-    .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+    .board {
+      position: relative;
+      width: 100%;
+      min-height: clamp(560px, 72vh, 700px);
+      overflow: hidden;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at center, rgba(139,124,255,.12) 0 17%, transparent 17.5%),
+        radial-gradient(circle at center, rgba(255,255,255,.04) 0 34%, transparent 34.5%),
+        rgba(0,0,0,.12);
+      border: 1px solid rgba(255,255,255,.08);
+    }
     .player {
-      position: relative; min-height: 174px; padding: 16px; border-radius: 21px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: min(190px, 34vw);
+      min-height: 150px;
+      padding: 16px;
+      border-radius: 21px;
+      transform: translate(-50%, -50%) rotate(var(--position-angle)) translateY(calc(-1 * var(--radius))) rotate(var(--rotation));
+      transform-origin: center;
+      cursor: pointer;
+      touch-action: manipulation;
+      user-select: none;
       border: 2px solid transparent; overflow: hidden; color: #fff;
       background: linear-gradient(145deg, var(--player), color-mix(in srgb, var(--player), #080b18 38%));
       box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 16px 30px rgba(0,0,0,.18);
@@ -86,6 +108,8 @@
     .player.active { border-color: #fff; transform: translateY(-4px) scale(1.015); box-shadow: 0 0 0 4px rgba(255,255,255,.16), 0 18px 34px rgba(0,0,0,.3); }
     .player.dead { opacity: .35; filter: grayscale(.75); }
     .player.dead::after { content: "ВЫБЫЛ"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 22px; font-weight: 950; letter-spacing: .08em; transform: rotate(-12deg); }
+    .player:active { filter: brightness(1.18); }
+    .board > .player { --radius: min(35vw, 220px); }
     .player-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .player-name { font-size: 16px; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .player-number { opacity: .75; font-size: 12px; font-weight: 900; }
@@ -109,7 +133,7 @@
     .modal .actions { justify-content: center; }
     .footer-note { margin-top: 16px; color: var(--muted); text-align: center; font-size: 12px; }
     @keyframes pulse { from { opacity: .7; } to { opacity: 1; } }
-    @media (max-width: 850px) { .board { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 850px) { .board { min-height: 590px; } }
     @media (max-width: 600px) {
       .app { padding: 14px; }
       .topbar, .game-head { flex-direction: column; align-items: stretch; }
@@ -117,7 +141,7 @@
       .head-actions .btn { flex: 1; }
       .fields, .name-grid { grid-template-columns: 1fr; }
       .board { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-      .player { min-height: 148px; padding: 12px; border-radius: 17px; }
+      .player { width: min(146px, 38vw); min-height: 132px; padding: 12px; border-radius: 17px; }
       .clock { margin: 15px 0 10px; font-size: 32px; }
       .center { grid-template-columns: 1fr; gap: 10px; }
       .rule { display: none; }
@@ -281,16 +305,24 @@
         state.players.forEach(function (player, index) {
           var card = document.createElement("article");
           card.className = "player" + (index === state.current && player.alive && state.running && !state.paused ? " active" : "") + (!player.alive ? " dead" : "");
+          var positionAngle = (360 / state.players.length) * index;
+          var rotation = 180 - positionAngle;
           card.style.setProperty("--player", player.color);
+          card.style.setProperty("--position-angle", positionAngle + "deg");
+          card.style.setProperty("--rotation", rotation + "deg");
           var isActive = index === state.current && player.alive && state.running && !state.paused;
           var action = player.alive
-            ? '<button class="pass-btn" data-pass="' + index + '"' + (isActive ? "" : " disabled") + '>✓ Ответил — передать ход</button>'
+            ? '<button class="pass-btn" data-pass="' + index + '"' + (isActive ? "" : " disabled") + '>✓ Нажать — передать ход</button>'
             : '<button class="pass-btn" disabled>Выбыл из игры</button>';
           card.innerHTML =
             '<div class="player-top"><div class="player-name">' + escapeHtml(player.name) + '</div><div class="player-number">#' + (index + 1) + '</div></div>' +
             '<div class="clock' + (player.timeLeft <= 10000 ? " warning" : "") + (player.timeLeft <= 0 ? " zero" : "") + '">' + formatTime(player.timeLeft) + '</div>' +
             action +
-            '<div class="player-hint">' + (isActive ? "Сейчас ваш ход" : (player.alive ? "Ожидает своей очереди" : "Время закончилось")) + '</div>';
+            '<div class="player-hint">' + (isActive ? "Нажмите на карточку после ответа" : (player.alive ? "Ожидает своей очереди" : "Время закончилось")) + '</div>';
+          card.addEventListener("click", function (event) {
+            if (event.target.closest(".pass-btn")) return;
+            passTurn(index);
+          });
           board.appendChild(card);
         });
         board.querySelectorAll("[data-pass]").forEach(function (button) {
