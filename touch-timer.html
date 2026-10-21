@@ -77,8 +77,8 @@
     .status.paused { color: #251900; background: var(--warning); }
     .board {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      grid-template-rows: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      grid-template-rows: repeat(6, minmax(0, 1fr));
       gap: 10px;
       width: 100%;
       min-height: clamp(560px, 72vh, 700px);
@@ -103,6 +103,17 @@
       cursor: pointer;
       touch-action: manipulation;
       user-select: none;
+    }
+    .player-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-width: 0;
+    }
+    .player.side-right .player-content { transform: rotate(-90deg); }
+    .player.side-left .player-content { transform: rotate(90deg); }
       border: 2px solid transparent; overflow: hidden; color: #fff;
       background: linear-gradient(145deg, var(--player), color-mix(in srgb, var(--player), #080b18 38%));
       box-shadow: inset 0 1px 0 rgba(255,255,255,.2), 0 16px 30px rgba(0,0,0,.18);
@@ -302,82 +313,55 @@
         status.className = "status " + (className || "");
       }
 
+      function makeTopSlots(count) {
+        if (count === 1) return [{row: 1, col: 2, rowSpan: 1, colSpan: 4, rotation: 180, side: "top"}];
+        if (count === 2) return [
+          {row: 1, col: 1, rowSpan: 1, colSpan: 3, rotation: 180, side: "top"},
+          {row: 1, col: 4, rowSpan: 1, colSpan: 3, rotation: 180, side: "top"}
+        ];
+        return [1, 3, 5].slice(0, count).map(function (col) {
+          return {row: 1, col: col, rowSpan: 1, colSpan: 2, rotation: 180, side: "top"};
+        });
+      }
+
+      function makeBottomSlots(count) {
+        if (count === 1) return [{row: 6, col: 2, rowSpan: 1, colSpan: 4, rotation: 0, side: "bottom"}];
+        if (count === 2) return [
+          {row: 6, col: 4, rowSpan: 1, colSpan: 3, rotation: 0, side: "bottom"},
+          {row: 6, col: 1, rowSpan: 1, colSpan: 3, rotation: 0, side: "bottom"}
+        ];
+        return [5, 3, 1].slice(0, count).map(function (col) {
+          return {row: 6, col: col, rowSpan: 1, colSpan: 2, rotation: 0, side: "bottom"};
+        });
+      }
+
+      function makeSideSlots(count, side) {
+        var isRight = side === "right";
+        var rotation = isRight ? 0 : 0;
+        var col = isRight ? 6 : 1;
+        if (count === 1) return [{row: 3, col: col, rowSpan: 2, colSpan: 1, rotation: rotation, side: side}];
+        return [2, 4].slice(0, count).map(function (row) {
+          return {row: row, col: col, rowSpan: 2, colSpan: 1, rotation: rotation, side: side};
+        });
+      }
+
       function getLayoutSlots(count) {
-        var layouts = {
-          2: [
-            {row: 1, col: 2, rotation: 180},
-            {row: 4, col: 2, rotation: 0}
-          ],
-          3: [
-            {row: 1, col: 2, rotation: 180},
-            {row: 2, col: 4, rotation: 90},
-            {row: 4, col: 2, rotation: 0}
-          ],
-          4: [
-            {row: 1, col: 2, rotation: 180},
-            {row: 2, col: 4, rotation: 90},
-            {row: 4, col: 3, rotation: 0},
-            {row: 3, col: 1, rotation: -90}
-          ],
-          5: [
-            {row: 1, col: 2, rotation: 180},
-            {row: 1, col: 3, rotation: 180},
-            {row: 2, col: 4, rotation: 90},
-            {row: 4, col: 3, rotation: 0},
-            {row: 3, col: 1, rotation: -90}
-          ],
-          6: [
-            {row: 1, col: 1, rotation: 180},
-            {row: 1, col: 3, rotation: 180},
-            {row: 2, col: 4, rotation: 90},
-            {row: 4, col: 3, rotation: 0},
-            {row: 4, col: 1, rotation: 0},
-            {row: 3, col: 1, rotation: -90}
-          ],
-          7: [
-            {row: 1, col: 1, rotation: 180},
-            {row: 1, col: 2, rotation: 180},
-            {row: 1, col: 3, rotation: 180},
-            {row: 2, col: 4, rotation: 90},
-            {row: 4, col: 3, rotation: 0},
-            {row: 4, col: 2, rotation: 0},
-            {row: 3, col: 1, rotation: -90}
-          ],
-          8: [
-            {row: 1, col: 1, rotation: 180},
-            {row: 1, col: 3, rotation: 180},
-            {row: 2, col: 4, rotation: 90},
-            {row: 3, col: 4, rotation: 90},
-            {row: 4, col: 3, rotation: 0},
-            {row: 4, col: 1, rotation: 0},
-            {row: 3, col: 1, rotation: -90},
-            {row: 2, col: 1, rotation: -90}
-          ],
-          9: [
-            {row: 1, col: 1, rotation: 180},
-            {row: 1, col: 2, rotation: 180},
-            {row: 1, col: 3, rotation: 180},
-            {row: 2, col: 4, rotation: 90},
-            {row: 3, col: 4, rotation: 90},
-            {row: 4, col: 3, rotation: 0},
-            {row: 4, col: 2, rotation: 0},
-            {row: 4, col: 1, rotation: 0},
-            {row: 2, col: 1, rotation: -90}
-          ],
-          10: [
-            {row: 1, col: 1, rotation: 180},
-            {row: 1, col: 2, rotation: 180},
-            {row: 1, col: 3, rotation: 180},
-            {row: 2, col: 4, rotation: 90},
-            {row: 3, col: 4, rotation: 90},
-            {row: 4, col: 3, rotation: 0},
-            {row: 4, col: 2, rotation: 0},
-            {row: 4, col: 1, rotation: 0},
-            {row: 3, col: 1, rotation: -90},
-            {row: 2, col: 1, rotation: -90}
-          ]
+        var distribution = {
+          2: [1, 0, 1, 0],
+          3: [1, 1, 1, 0],
+          4: [1, 1, 1, 1],
+          5: [2, 1, 1, 1],
+          6: [2, 1, 2, 1],
+          7: [2, 2, 2, 1],
+          8: [2, 2, 2, 2],
+          9: [3, 2, 2, 2],
+          10: [3, 2, 3, 2]
         };
-        return layouts[count] || layouts[4];
+        var sides = distribution[count] || distribution[4];
+        return makeTopSlots(sides[0])
+          .concat(makeSideSlots(sides[1], "right"))
+          .concat(makeBottomSlots(sides[2]))
+          .concat(makeSideSlots(sides[3], "left"));
       }
 
       function renderBoard() {
@@ -387,8 +371,9 @@
           var card = document.createElement("article");
           card.className = "player" + (index === state.current && player.alive && state.running && !state.paused ? " active" : "") + (!player.alive ? " dead" : "");
           var slot = slots[index];
-          card.style.gridRow = slot.row;
-          card.style.gridColumn = slot.col;
+          card.classList.add("side-" + slot.side);
+          card.style.gridRow = slot.row + " / span " + slot.rowSpan;
+          card.style.gridColumn = slot.col + " / span " + slot.colSpan;
           card.style.setProperty("--player", player.color);
           card.style.setProperty("--rotation", slot.rotation + "deg");
           var isActive = index === state.current && player.alive && state.running && !state.paused;
@@ -396,10 +381,12 @@
             ? '<button class="pass-btn" data-pass="' + index + '"' + (isActive ? "" : " disabled") + '>✓ Нажать — передать ход</button>'
             : '<button class="pass-btn" disabled>Выбыл из игры</button>';
           card.innerHTML =
+            '<div class="player-content">' +
             '<div class="player-top"><div class="player-name">' + escapeHtml(player.name) + '</div><div class="player-number">#' + (index + 1) + '</div></div>' +
             '<div class="clock' + (player.timeLeft <= 10000 ? " warning" : "") + (player.timeLeft <= 0 ? " zero" : "") + '">' + formatTime(player.timeLeft) + '</div>' +
             action +
-            '<div class="player-hint">' + (isActive ? "Нажмите на карточку после ответа" : (player.alive ? "Ожидает своей очереди" : "Время закончилось")) + '</div>';
+            '<div class="player-hint">' + (isActive ? "Нажмите на карточку после ответа" : (player.alive ? "Ожидает своей очереди" : "Время закончилось")) + '</div>' +
+            '</div>';
           card.addEventListener("click", function (event) {
             if (event.target.closest(".pass-btn")) return;
             passTurn(index);
