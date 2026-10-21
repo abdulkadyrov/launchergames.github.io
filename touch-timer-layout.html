@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0e21">
+  <title>Touch Timer — редактор раскладки</title>
+  <style>
+    :root {
+      --bg:#080b18; --panel:rgba(17,24,53,.9); --line:rgba(255,255,255,.14);
+      --text:#f8f9ff; --muted:#aeb7d8; --accent:#8b7cff; --good:#39e58c;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;background:
+      radial-gradient(900px 600px at 0 -10%,rgba(139,124,255,.3),transparent 60%),
+      radial-gradient(800px 600px at 100% 100%,rgba(57,229,140,.12),transparent 60%),var(--bg)}
+    button,input,select{font:inherit}
+    button{cursor:pointer}
+    .app{width:min(1180px,100%);margin:auto;padding:18px}
+    .topbar{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:16px}
+    h1,h2,h3,p{margin:0} h1{font-size:clamp(24px,4vw,38px);letter-spacing:-.05em}
+    .subtitle{color:var(--muted);font-size:14px;line-height:1.45;margin-top:6px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 70px rgba(0,0,0,.26);backdrop-filter:blur(14px)}
+    .toolbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px;margin-bottom:14px}
+    .field{display:grid;gap:6px;color:var(--muted);font-size:12px;font-weight:800}
+    input,select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:12px;color:var(--text);background:rgba(0,0,0,.2);outline:0}
+    input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(139,124,255,.18)}
+    .toolbar-actions{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px}
+    .btn{border:1px solid var(--line);border-radius:12px;padding:10px 13px;color:var(--text);background:rgba(255,255,255,.07);font-weight:800}
+    .btn:hover{filter:brightness(1.16)} .btn.primary{color:#111229;background:#ffd166;border-color:transparent}
+    .btn.good{color:#06190e;background:var(--good);border-color:transparent}.btn.danger{background:rgba(255,82,119,.2)}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}
+    .stage-panel{padding:14px}.stage-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+    .stage-head h2{font-size:17px}.badge{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:var(--muted);font-size:12px;font-weight:800}
+    #table{position:relative;width:100%;aspect-ratio:1/1;min-height:340px;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.12);background:
+      linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px),
+      radial-gradient(circle at center,rgba(139,124,255,.15),transparent 40%),#0c1128;background-size:10% 10%,10% 10%,auto}
+    #table:before{content:"";position:absolute;left:50%;top:50%;width:31%;aspect-ratio:1;border:1px dashed rgba(255,255,255,.2);border-radius:50%;transform:translate(-50%,-50%);pointer-events:none}
+    .center-label{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30%;text-align:center;color:var(--muted);font-size:12px;line-height:1.35;pointer-events:none}
+    .timer-card{position:absolute;width:clamp(70px,13%,104px);aspect-ratio:1;transform:translate(-50%,-50%) rotate(var(--rotation));display:flex;flex-direction:column;justify-content:space-between;padding:10px;border:2px solid transparent;border-radius:16px;color:#fff;box-shadow:0 10px 22px rgba(0,0,0,.27),inset 0 1px 0 rgba(255,255,255,.22);touch-action:none;user-select:none;cursor:grab}
+    .timer-card:active{cursor:grabbing}.timer-card.active{border-color:#fff;box-shadow:0 0 0 4px rgba(255,255,255,.15),0 12px 26px rgba(0,0,0,.32)}
+    .timer-card.dragging{opacity:.86;z-index:5}.timer-card.dead{opacity:.35;filter:grayscale(1)}
+    .timer-card-top{display:flex;justify-content:space-between;gap:4px;font-size:11px;font-weight:900}.timer-card-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .timer-card-time{text-align:center;font-size:clamp(18px,3.3vw,30px);font-weight:950;letter-spacing:-.06em;font-variant-numeric:tabular-nums}
+    .rotate-btn{border:1px solid rgba(255,255,255,.28);border-radius:8px;padding:3px 6px;color:#fff;background:rgba(0,0,0,.2);font-size:12px;align-self:center}
+    .side{display:grid;gap:14px}.side-section{padding:14px}.side-section h3{font-size:14px;margin-bottom:10px}
+    .template-row{display:grid;grid-template-columns:1fr auto;gap:7px;margin-bottom:8px}.template-list{display:grid;gap:7px;max-height:260px;overflow:auto}
+    .template-item{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:9px;border:1px solid var(--line);border-radius:11px;background:rgba(255,255,255,.05);font-size:12px}
+    .template-item button{border:0;background:none;color:var(--text);font-size:12px}.template-item button:hover{color:#ffd166}
+    .hint{color:var(--muted);font-size:12px;line-height:1.45}.status{min-height:18px;margin-top:9px;color:var(--good);font-size:12px;font-weight:800}
+    .preview-actions{display:flex;flex-wrap:wrap;gap:7px}.preview-actions .btn{flex:1;min-width:100px}
+    .footer{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
+    @media(max-width:800px){.layout{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr}.stage-panel{padding:10px}.side{grid-template-columns:1fr 1fr}.timer-card{padding:8px;border-radius:12px}.rotate-btn{font-size:10px;padding:2px 4px}}
+    @media(max-width:520px){.side{grid-template-columns:1fr}.topbar{flex-direction:column}.toolbar-actions .btn{flex:1}.center-label{font-size:10px}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <h1>🧩 Редактор раскладки</h1>
+        <p class="subtitle">Перетащи квадратные таймеры по столу. Нажми ↻, чтобы повернуть игрока. Сохраняй разные варианты для 2, 4, 8 и 10 игроков.</p>
+      </div>
+      <a class="btn" href="touch-timer.html">← В игру</a>
+    </header>
+
+    <section class="panel toolbar">
+      <label class="field">Количество игроков
+        <select id="count">
+          <option>2</option><option>3</option><option>4</option><option>5</option>
+          <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+        </select>
+      </label>
+      <label class="field">Время каждому игроку
+        <input id="time" type="number" min="5" max="3600" value="30">
+      </label>
+      <label class="field">Название шаблона
+        <input id="templateName" type="text" placeholder="Например: 8 игроков — большой стол">
+      </label>
+      <label class="field">Сетка при перетаскивании
+        <select id="snap"><option value="yes">Включена</option><option value="no">Выключена</option></select>
+      </label>
+      <div class="toolbar-actions">
+        <button id="create" class="btn primary" type="button">Создать раскладку</button>
+        <button id="save" class="btn good" type="button">Сохранить шаблон</button>
+        <button id="reset" class="btn" type="button">Вернуть стандартную</button>
+      </div>
+    </section>
+
+    <div class="layout">
+      <section class="panel stage-panel">
+        <div class="stage-head"><h2>Интерактивный макет</h2><span id="countBadge" class="badge">4 игрока</span></div>
+        <div id="table"><div class="center-label">Центр стола<br>Перетаскивай таймеры</div></div>
+        <p class="footer">Нажатие на активный таймер в демо-режиме передаёт ход следующему игроку.</p>
+      </section>
+
+      <aside class="side">
+        <section class="panel side-section">
+          <h3>Демо как в игре</h3>
+          <div class="preview-actions">
+            <button id="demo" class="btn good" type="button">▶ Старт</button>
+            <button id="pause" class="btn" type="button">⏸ Пауза</button>
+            <button id="stop" class="btn danger" type="button">■ Сброс</button>
+          </div>
+          <div id="status" class="status"></div>
+        </section>
+        <section class="panel side-section">
+          <h3>Мои шаблоны</h3>
+          <div class="template-row">
+            <select id="templates"><option value="">— пока пусто —</option></select>
+            <button id="load" class="btn" type="button">Загрузить</button>
+          </div>
+          <div id="templateList" class="template-list"></div>
+          <p class="hint">Шаблоны сохраняются в этом браузере. Назови каждый вариант, например «4 игрока» или «10 игроков кругом».</p>
+        </section>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    (function(){
+      "use strict";
+      var colors=["#6957e8","#12b981","#f59e0b","#e74980","#2387e8","#9b5de5","#ef4444","#0ea5a4","#f97316","#64748b"];
+      var storageKey="touchTimerLayoutTemplates.v1";
+      var state={players:[],active:0,running:false,paused:false,timerId:null,lastTick:0};
+      var table=document.getElementById("table"), countEl=document.getElementById("count"), timeEl=document.getElementById("time");
+      var nameEl=document.getElementById("templateName"), snapEl=document.getElementById("snap"), statusEl=document.getElementById("status");
+      var templatesEl=document.getElementById("templates"), listEl=document.getElementById("templateList"), badge=document.getElementById("countBadge");
+      var drag=null;
+
+      function clamp(n,min,max){return Math.max(min,Math.min(max,n));}
+      function num(v,fallback){var n=Number(v);return Number.isFinite(n)?n:fallback;}
+      function fmt(ms){var s=Math.max(0,Math.ceil(ms/1000));return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");}
+      function setStatus(text){statusEl.textContent=text;}
+
+      function defaultPositions(count){
+        var groups={2:[1,0,1,0],3:[1,1,1,0],4:[1,1,1,1],5:[2,1,1,1],6:[2,1,2,1],7:[2,2,2,1],8:[2,2,2,2],9:[3,2,2,2],10:[3,2,3,2]}[count]||[1,1,1,1];
+        var result=[];
+        function top(n){if(n===1)return [{x:50,y:9,r:180}];return (n===2?[25,75]:[17,50,83]).slice(0,n).map(function(x){return {x:x,y:9,r:180};});}
+        function bottom(n){if(n===1)return [{x:50,y:91,r:0}];return (n===2?[75,25]:[83,50,17]).slice(0,n).map(function(x){return {x:x,y:91,r:0};});}
+        function side(n,x,r){if(n===1)return [{x:x,y:50,r:r}];return [29,71].slice(0,n).map(function(y){return {x:x,y:y,r:r};});}
+        return result.concat(top(groups[0]),side(groups[1],91,90),bottom(groups[2]),side(groups[3],9,-90));
+      }
+
+      function makePlayers(count,time,old){
+        var positions=old||defaultPositions(count), players=[];
+        for(var i=0;i<count;i++){
+          var p=positions[i]||{x:50,y:50,r:0};
+          players.push({id:"p"+(i+1),name:"Игрок "+(i+1),x:p.x,y:p.y,r:p.r,timeLeft:time*1000,alive:true,color:colors[i]});
+        }
+        return players;
+      }
+
+      function render(){
+        table.querySelectorAll(".timer-card").forEach(function(el){el.remove();});
+        badge.textContent=state.players.length+" игроков";
+        state.players.forEach(function(player,index){
+          var card=document.createElement("article");
+          card.className="timer-card"+(index===state.active&&player.alive&&state.running&&!state.paused?" active":"")+(player.alive?"":" dead");
+          card.style.left=player.x+"%"; card.style.top=player.y+"%"; card.style.setProperty("--rotation",player.r+"deg");
+          card.style.background="linear-gradient(145deg,"+player.color+",#11162f)";
+          card.innerHTML='<div class="timer-card-top"><span class="timer-card-name">'+player.name+'</span><span>#'+(index+1)+'</span></div>'+
+            '<div class="timer-card-time">'+fmt(player.timeLeft)+'</div>'+
+            '<button class="rotate-btn" type="button">↻ Повернуть</button>';
+          card.querySelector(".rotate-btn").addEventListener("click",function(event){event.stopPropagation();player.r=(player.r+90)%360;render();});
+          card.addEventListener("pointerdown",function(event){
+            if(event.target.closest("button"))return;
+            drag={player:player,card:card,moved:false,offsetX:0,offsetY:0};
+            card.classList.add("dragging"); card.setPointerCapture(event.pointerId);
+          });
+          card.addEventListener("pointermove",function(event){
+            if(!drag||drag.card!==card)return;
+            var rect=table.getBoundingClientRect();
+            var x=clamp((event.clientX-rect.left)/rect.width*100,6,94);
+            var y=clamp((event.clientY-rect.top)/rect.height*100,6,94);
+            if(snapEl.value==="yes"){x=Math.round(x/5)*5;y=Math.round(y/5)*5;}
+            if(Math.abs(x-player.x)+Math.abs(y-player.y)>1)drag.moved=true;
+            player.x=x;player.y=y;card.style.left=x+"%";card.style.top=y+"%";
+          });
+          card.addEventListener("pointerup",function(){
+            if(!drag||drag.card!==card)return;
+            card.classList.remove("dragging");
+            if(!drag.moved&&state.running&&!state.paused&&index===state.active)passTurn();
+            drag=null;
+          });
+          table.appendChild(card);
+        });
+      }
+
+      function renderTemplates(){
+        var all=readTemplates();
+        templatesEl.innerHTML=all.length?all.map(function(t){return '<option value="'+t.id+'">'+t.name+" · "+t.count+" игроков</option>";}).join(""):'<option value="">— пока пусто —</option>';
+        listEl.innerHTML=all.map(function(t){return '<div class="template-item"><span>'+t.name+" · "+t.count+" игроков</span><button type="button" data-delete="'+t.id+'">Удалить</button></div>";}).join("");
+        listEl.querySelectorAll("[data-delete]").forEach(function(btn){btn.addEventListener("click",function(){deleteTemplate(btn.dataset.delete);});});
+      }
+      function readTemplates(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]");}catch(e){return [];}}
+      function writeTemplates(list){localStorage.setItem(storageKey,JSON.stringify(list));renderTemplates();}
+      function saveTemplate(){
+        var name=nameEl.value.trim()||("Шаблон · "+state.players.length+" игроков");
+        var list=readTemplates(), item={id:"t"+Date.now(),name:name,count:state.players.length,time:Number(timeEl.value)||30,players:state.players.map(function(p){return {x:p.x,y:p.y,r:p.r};})};
+        list.push(item);writeTemplates(list);nameEl.value="";setStatus("Шаблон сохранён: "+name);
+      }
+      function deleteTemplate(id){writeTemplates(readTemplates().filter(function(t){return t.id!==id;}));setStatus("Шаблон удалён");}
+      function loadTemplate(){
+        var item=readTemplates().find(function(t){return t.id===templatesEl.value;});if(!item)return;
+        countEl.value=item.count;timeEl.value=item.time;state.players=makePlayers(item.count,item.time,item.players);stopDemo();render();setStatus("Загружен: "+item.name);
+      }
+      function createLayout(){
+        var count=Math.max(2,Math.min(10,Math.round(num(countEl.value,4)))),time=Math.max(5,Math.min(3600,Math.round(num(timeEl.value,30))));
+        countEl.value=count;timeEl.value=time;stopDemo();state.active=0;state.players=makePlayers(count,time);render();setStatus("Создана раскладка для "+count+" игроков");
+      }
+      function resetLayout(){stopDemo();state.active=0;state.players=makePlayers(state.players.length,Number(timeEl.value)||30);render();setStatus("Возвращена стандартная раскладка");}
+      function nextAlive(){
+        for(var i=1;i<=state.players.length;i++){var idx=(state.active+i)%state.players.length;if(state.players[idx].alive)return idx;}return state.active;
+      }
+      function passTurn(){if(!state.running||state.paused)return;state.active=nextAlive();state.lastTick=performance.now();render();}
+      function eliminate(){
+        state.players[state.active].alive=false;
+        var alive=state.players.filter(function(p){return p.alive;});
+        if(alive.length<=1){stopDemo();setStatus(alive.length?alive[0].name+" победил":"Все игроки выбыли");render();return;}
+        state.active=nextAlive();state.lastTick=performance.now();setStatus("Игрок выбыл — ход передан");render();
+      }
+      function tick(){
+        if(!state.running||state.paused)return;
+        var now=performance.now(),elapsed=now-state.lastTick;state.lastTick=now;
+        var p=state.players[state.active];if(!p||!p.alive)return;
+        p.timeLeft-=elapsed;if(p.timeLeft<=0){p.timeLeft=0;eliminate();return;}render();
+      }
+      function startDemo(){state.running=true;state.paused=false;state.lastTick=performance.now();clearInterval(state.timerId);state.timerId=setInterval(tick,100);setStatus("Демо запущено — нажимай активный таймер");render();}
+      function togglePause(){if(!state.running)return;state.paused=!state.paused;if(!state.paused)state.lastTick=performance.now();setStatus(state.paused?"Демо на паузе":"Демо запущено");render();}
+      function stopDemo(){clearInterval(state.timerId);state.timerId=null;state.running=false;state.paused=false;state.players.forEach(function(p){p.timeLeft=(Number(timeEl.value)||30)*1000;p.alive=true;});}
+      document.getElementById("create").addEventListener("click",createLayout);
+      document.getElementById("save").addEventListener("click",saveTemplate);
+      document.getElementById("reset").addEventListener("click",resetLayout);
+      document.getElementById("demo").addEventListener("click",startDemo);
+      document.getElementById("pause").addEventListener("click",togglePause);
+      document.getElementById("stop").addEventListener("click",function(){stopDemo();render();setStatus("Демо сброшено");});
+      document.getElementById("load").addEventListener("click",loadTemplate);
+      countEl.addEventListener("change",function(){createLayout();});
+      renderTemplates();createLayout();
+    }());
+  </script>
+</body>
+</html>
