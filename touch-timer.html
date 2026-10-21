@@ -76,10 +76,14 @@
     .status.live { color: #061a10; background: var(--good); }
     .status.paused { color: #251900; background: var(--warning); }
     .board {
-      position: relative;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-rows: repeat(4, minmax(0, 1fr));
+      gap: 10px;
       width: 100%;
       min-height: clamp(560px, 72vh, 700px);
       overflow: hidden;
+      padding: 10px;
       border-radius: 28px;
       background:
         radial-gradient(circle at center, rgba(139,124,255,.12) 0 17%, transparent 17.5%),
@@ -88,14 +92,13 @@
       border: 1px solid rgba(255,255,255,.08);
     }
     .player {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: min(190px, 34vw);
-      min-height: 150px;
-      padding: 16px;
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      height: 100%;
+      padding: 14px;
       border-radius: 21px;
-      transform: translate(-50%, -50%) rotate(var(--position-angle)) translateY(calc(-1 * var(--radius))) rotate(var(--rotation));
+      transform: rotate(var(--rotation));
       transform-origin: center;
       cursor: pointer;
       touch-action: manipulation;
@@ -109,7 +112,6 @@
     .player.dead { opacity: .35; filter: grayscale(.75); }
     .player.dead::after { content: "ВЫБЫЛ"; position: absolute; inset: 0; display: grid; place-items: center; font-size: 22px; font-weight: 950; letter-spacing: .08em; transform: rotate(-12deg); }
     .player:active { filter: brightness(1.18); }
-    .board > .player { --radius: min(35vw, 220px); }
     .player-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .player-name { font-size: 16px; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .player-number { opacity: .75; font-size: 12px; font-weight: 900; }
@@ -133,7 +135,7 @@
     .modal .actions { justify-content: center; }
     .footer-note { margin-top: 16px; color: var(--muted); text-align: center; font-size: 12px; }
     @keyframes pulse { from { opacity: .7; } to { opacity: 1; } }
-    @media (max-width: 850px) { .board { min-height: 590px; } }
+    @media (max-width: 850px) { .board { min-height: 590px; gap: 8px; padding: 8px; } }
     @media (max-width: 600px) {
       .app { padding: 14px; }
       .topbar, .game-head { flex-direction: column; align-items: stretch; }
@@ -141,7 +143,7 @@
       .head-actions .btn { flex: 1; }
       .fields, .name-grid { grid-template-columns: 1fr; }
       .board { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-      .player { width: min(146px, 38vw); min-height: 132px; padding: 12px; border-radius: 17px; }
+      .player { min-height: 0; padding: 10px; border-radius: 17px; }
       .clock { margin: 15px 0 10px; font-size: 32px; }
       .center { grid-template-columns: 1fr; gap: 10px; }
       .rule { display: none; }
@@ -300,16 +302,95 @@
         status.className = "status " + (className || "");
       }
 
+      function getLayoutSlots(count) {
+        var layouts = {
+          2: [
+            {row: 1, col: 2, rotation: 180},
+            {row: 4, col: 2, rotation: 0}
+          ],
+          3: [
+            {row: 1, col: 2, rotation: 180},
+            {row: 2, col: 4, rotation: 90},
+            {row: 4, col: 2, rotation: 0}
+          ],
+          4: [
+            {row: 1, col: 2, rotation: 180},
+            {row: 2, col: 4, rotation: 90},
+            {row: 4, col: 3, rotation: 0},
+            {row: 3, col: 1, rotation: -90}
+          ],
+          5: [
+            {row: 1, col: 2, rotation: 180},
+            {row: 1, col: 3, rotation: 180},
+            {row: 2, col: 4, rotation: 90},
+            {row: 4, col: 3, rotation: 0},
+            {row: 3, col: 1, rotation: -90}
+          ],
+          6: [
+            {row: 1, col: 1, rotation: 180},
+            {row: 1, col: 3, rotation: 180},
+            {row: 2, col: 4, rotation: 90},
+            {row: 4, col: 3, rotation: 0},
+            {row: 4, col: 1, rotation: 0},
+            {row: 3, col: 1, rotation: -90}
+          ],
+          7: [
+            {row: 1, col: 1, rotation: 180},
+            {row: 1, col: 2, rotation: 180},
+            {row: 1, col: 3, rotation: 180},
+            {row: 2, col: 4, rotation: 90},
+            {row: 4, col: 3, rotation: 0},
+            {row: 4, col: 2, rotation: 0},
+            {row: 3, col: 1, rotation: -90}
+          ],
+          8: [
+            {row: 1, col: 1, rotation: 180},
+            {row: 1, col: 3, rotation: 180},
+            {row: 2, col: 4, rotation: 90},
+            {row: 3, col: 4, rotation: 90},
+            {row: 4, col: 3, rotation: 0},
+            {row: 4, col: 1, rotation: 0},
+            {row: 3, col: 1, rotation: -90},
+            {row: 2, col: 1, rotation: -90}
+          ],
+          9: [
+            {row: 1, col: 1, rotation: 180},
+            {row: 1, col: 2, rotation: 180},
+            {row: 1, col: 3, rotation: 180},
+            {row: 2, col: 4, rotation: 90},
+            {row: 3, col: 4, rotation: 90},
+            {row: 4, col: 3, rotation: 0},
+            {row: 4, col: 2, rotation: 0},
+            {row: 4, col: 1, rotation: 0},
+            {row: 2, col: 1, rotation: -90}
+          ],
+          10: [
+            {row: 1, col: 1, rotation: 180},
+            {row: 1, col: 2, rotation: 180},
+            {row: 1, col: 3, rotation: 180},
+            {row: 2, col: 4, rotation: 90},
+            {row: 3, col: 4, rotation: 90},
+            {row: 4, col: 3, rotation: 0},
+            {row: 4, col: 2, rotation: 0},
+            {row: 4, col: 1, rotation: 0},
+            {row: 3, col: 1, rotation: -90},
+            {row: 2, col: 1, rotation: -90}
+          ]
+        };
+        return layouts[count] || layouts[4];
+      }
+
       function renderBoard() {
         board.innerHTML = "";
+        var slots = getLayoutSlots(state.players.length);
         state.players.forEach(function (player, index) {
           var card = document.createElement("article");
           card.className = "player" + (index === state.current && player.alive && state.running && !state.paused ? " active" : "") + (!player.alive ? " dead" : "");
-          var positionAngle = (360 / state.players.length) * index;
-          var rotation = 180 - positionAngle;
+          var slot = slots[index];
+          card.style.gridRow = slot.row;
+          card.style.gridColumn = slot.col;
           card.style.setProperty("--player", player.color);
-          card.style.setProperty("--position-angle", positionAngle + "deg");
-          card.style.setProperty("--rotation", rotation + "deg");
+          card.style.setProperty("--rotation", slot.rotation + "deg");
           var isActive = index === state.current && player.alive && state.running && !state.paused;
           var action = player.alive
             ? '<button class="pass-btn" data-pass="' + index + '"' + (isActive ? "" : " disabled") + '>✓ Нажать — передать ход</button>'
