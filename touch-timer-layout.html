@@ -190,7 +190,7 @@
       function renderTemplates(){
         var all=readTemplates();
         templatesEl.innerHTML=all.length?all.map(function(t){return '<option value="'+t.id+'">'+t.name+" · "+t.count+" игроков</option>";}).join(""):'<option value="">— пока пусто —</option>';
-        listEl.innerHTML=all.map(function(t){return '<div class="template-item"><span>'+t.name+" · "+t.count+" игроков</span><button type="button" data-delete="'+t.id+'">Удалить</button></div>";}).join("");
+        listEl.innerHTML=all.map(function(t){return '<div class="template-item"><span>'+t.name+' · '+t.count+' игроков</span><button type="button" data-delete="'+t.id+'">Удалить</button></div>';}).join("");
         listEl.querySelectorAll("[data-delete]").forEach(function(btn){btn.addEventListener("click",function(){deleteTemplate(btn.dataset.delete);});});
       }
       function readTemplates(){try{return JSON.parse(localStorage.getItem(storageKey)||"[]");}catch(e){return [];}}
