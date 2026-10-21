@@ -83,6 +83,7 @@
       <div class="toolbar-actions">
         <button id="create" class="btn primary" type="button">Создать раскладку</button>
         <button id="save" class="btn good" type="button">Сохранить шаблон</button>
+        <button id="export" class="btn" type="button">Экспорт JSON</button>
         <button id="reset" class="btn" type="button">Вернуть стандартную</button>
       </div>
     </section>
@@ -201,6 +202,13 @@
         list.push(item);writeTemplates(list);nameEl.value="";setStatus("Шаблон сохранён: "+name);
       }
       function deleteTemplate(id){writeTemplates(readTemplates().filter(function(t){return t.id!==id;}));setStatus("Шаблон удалён");}
+      function exportTemplates(){
+        var data=JSON.stringify(readTemplates(),null,2);
+        var blob=new Blob([data],{type:"application/json"});
+        var url=URL.createObjectURL(blob),a=document.createElement("a");
+        a.href=url;a.download="touch-timer-layouts.json";a.click();URL.revokeObjectURL(url);
+        setStatus("Шаблоны экспортированы в JSON");
+      }
       function loadTemplate(){
         var item=readTemplates().find(function(t){return t.id===templatesEl.value;});if(!item)return;
         countEl.value=item.count;timeEl.value=item.time;state.players=makePlayers(item.count,item.time,item.players);stopDemo();render();setStatus("Загружен: "+item.name);
@@ -231,6 +239,7 @@
       function stopDemo(){clearInterval(state.timerId);state.timerId=null;state.running=false;state.paused=false;state.players.forEach(function(p){p.timeLeft=(Number(timeEl.value)||30)*1000;p.alive=true;});}
       document.getElementById("create").addEventListener("click",createLayout);
       document.getElementById("save").addEventListener("click",saveTemplate);
+      document.getElementById("export").addEventListener("click",exportTemplates);
       document.getElementById("reset").addEventListener("click",resetLayout);
       document.getElementById("demo").addEventListener("click",startDemo);
       document.getElementById("pause").addEventListener("click",togglePause);
